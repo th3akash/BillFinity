@@ -1,0 +1,147 @@
+/* Custom styles for InvoiceFlow */
+
+/* Ensure consistent font loading */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Improve focus states for accessibility */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #13A4EC;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input {
+  transition: all 0.2s ease;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Status badge improvements */
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.status-badge::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-badge.completed {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.status-badge.completed::before {
+  background-color: #10b981;
+}
+
+.status-badge.pending {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.status-badge.pending::before {
+  background-color: #f59e0b;
+}
+
+.status-badge.canceled {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.status-badge.canceled::before {
+  background-color: #ef4444;
+}
+
+/* Table improvements */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+td, th {
+  padding: 0.75rem 1rem;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Chart container responsive behavior */
+.chart-container {
+  position: relative;
+  height: 16rem;
+  width: 100%;
+}
+
+@media (min-width: 1280px) {
+  .chart-container {
+    height: 20rem;
+  }
+}
+
+/* Print styles for reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .shadow-card, .border {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+}

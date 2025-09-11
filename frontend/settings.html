@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InvoiceFlow • Settings</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;600;700;800;900"
+    />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
+    <script nomodule src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.js"></script>
+    <script defer src="sidebar.js"></script>
+    <script defer src="global-search.js"></script>
+    <script defer src="settings.js"></script>
+    <script defer src="ui-common.js"></script>
+    <link rel="stylesheet" href="common.css" />
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body class="bg-slate-100">
+    <div class="min-h-screen flex">
+      <aside class="app-aside hidden lg:flex lg:fixed top-0 left-0 h-screen w-72 overflow-y-auto shrink-0 flex-col bg-white/90 backdrop-blur border-r border-slate-200 px-4 py-5">
+        <a href="index.html" class="flex items-center gap-3 px-2">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white shadow-card">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 15-4-4 1.414-1.414L13 13.172l4.586-4.586L19 10Z"/></svg>
+          </span>
+          <div class="leading-tight">
+            <p class="text-sm text-slate-500">Manjeet Furnitures</p>
+            <h1 class="text-xl font-extrabold tracking-tight text-ink">InvoiceFlow</h1>
+          </div>
+        </a>
+        <nav class="mt-8 space-y-1 text-sm">
+          <a href="index.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z"/></svg></span>
+            Dashboard
+          </a>
+          <a href="orders.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 7H3V5h18v2Zm0 4H3v8h18v-8ZM5 13h6v4H5v-4Zm8 0h6v4h-6v-4Z"/></svg></span>
+            Billing / Orders
+          </a>
+          <a href="customers.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M7 11a4 4 0 1 1 4-4 4.005 4.005 0 0 1-4 4Zm10 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-10 2a6 6 0 0 0-6 6h8v-2a6 6 0 0 1 3-5.196A7.942 7.942 0 0 0 7 13Zm8 1a4 4 0 0 0-4 4v1h8a4 4 0 0 0-4-5Z"/></svg></span>
+            Customers
+          </a>
+          <a href="items.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 8.002 12 3 3 8.002V21h8v-6h2v6h8zM5 10.154l7-3.888 7 3.888V19h-4v-6H9v6H5z"/></svg></span>
+            Inventory Management
+          </a>
+          <a href="reports.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 3h18v2H3zm0 4h18v10H3zm0 12h18v2H3zm2-10v6h14v-6z"/></svg></span>
+            Reports & Analytics
+          </a>
+          <a href="user-management.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a7 7 0 0 1 14 0H3Zm18-3h-2v-2h2v2Zm0-4h-2V6h2z"/></svg></span>
+            User Management
+          </a>
+          <a href="connectors.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M8 8h3a1 1 0 1 1 0 2H8a3 3 0 1 0 0 6h3a1 1 0 1 1 0 2H8a5 5 0 1 1 0-10Zm5 0h3a5 5 0 1 1 0 10h-3a1 1 0 1 1 0-2h3a3 3 0 1 0 0-6h-3a1 1 0 1 1 0-2Z"/></svg></span>
+            Connectors
+          </a>
+          <a href="settings.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 bg-slate-100 text-ink font-medium">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand-600 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="m19.14 12.936.843-1.459-1.3-2.251-1.673.189a5.968 5.968 0 0 0-1.22-.706l-.546-1.6h-2.6l-.546 1.6a5.968 5.968 0 0 0-1.22.706l-1.673-.189-1.3 2.251.843 1.459a6.18 6.18 0 0 0 0 1.129l-.843 1.459 1.3 2.251 1.673-.189c.38.287.78.52 1.22.706l.546 1.6h2.6l.546-1.6c.44-.186.84-.419 1.22-.706l1.673.189 1.3-2.251-.843-1.459c.03-.373.03-.756 0-1.129ZM12 14.5A2.5 2.5 0 1 1 14.5 12 2.503 2.503 0 0 1 12 14.5Z"/></svg></span>
+            Settings
+          </a>
+        </nav>
+      </aside>
+
+      <div class="app-main ml-0 lg:ml-72 flex-1 flex flex-col min-w-0">
+        <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
+          <div class="mx-auto max-w-screen-2xl px-6 py-4 flex items-center gap-4">
+            <form class="flex-1">
+              <label class="relative block">
+                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-content-center" style="overflow: visible;"><dotlottie-player id="global-search-icon" src="assets/search-icon.lottie" style="width:24px;height:24px; transform: scale(4.5); transform-origin: center; display:inline-block;" background="transparent"></dotlottie-player></span>
+                <input type="search" data-global-search="true" placeholder="Search settings…" class="w-full rounded-2xl border-slate-200 bg-slate-50/70 pl-11 pr-4 h-11 focus:bg-white focus:ring-2 focus:ring-brand-200" />
+              </label>
+            </form>
+            <button id="toggle-sidebar" class="hidden lg:inline-flex rounded-lg border border-slate-200 p-2" aria-label="Toggle sidebar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-slate-600"><path d="M3 5h18v2H3zm0 6h12v2H3zm0 6h18v2H3z"/></svg>
+            </button>
+            <img src="https://i.pravatar.cc/64?img=5" alt="User avatar" class="h-8 w-8 rounded-full" />
+          </div>
+        </header>
+
+        <main class="mx-auto max-w-screen-2xl w-full px-6 pb-16 pt-8 space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-3xl font-bold tracking-tight text-ink">Settings</h2>
+          </div>
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              <div>
+                <h3 class="text-lg font-semibold text-ink">General</h3>
+                <div class="mt-4 grid grid-cols-1 gap-4 text-sm">
+                  <div>
+                    <label for="company-name" class="font-medium text-slate-700">Company Name</label>
+                    <input type="text" id="company-name" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Manjeet Furnitures" />
+                  </div>
+                  <div>
+                    <label for="address" class="font-medium text-slate-700">Address</label>
+                    <textarea id="address" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" rows="3" placeholder="14, Industrial Area, Sector 62, Noida, Uttar Pradesh, India"></textarea>
+                  </div>
+                  <div>
+                    <label for="phone" class="font-medium text-slate-700">Phone Number</label>
+                    <input type="tel" id="phone" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="+91 999 888 777" />
+                  </div>
+                  <div>
+                    <label for="email" class="font-medium text-slate-700">Email Address</label>
+                    <input type="email" id="email" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="contact@manjeetfurnitures.com" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-ink">User Profile</h3>
+                <div class="mt-4 grid grid-cols-1 gap-4 text-sm">
+                  <div>
+                    <label for="user-name" class="font-medium text-slate-700">Your Name</label>
+                    <input type="text" id="user-name" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Rajesh Sharma" />
+                  </div>
+                  <div>
+                    <label for="user-email" class="font-medium text-slate-700">Your Email</label>
+                    <input type="email" id="user-email" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="rajesh@manjeet.com" />
+                  </div>
+                  <div>
+                    <label for="user-role" class="font-medium text-slate-700">Your Role</label>
+                    <input type="text" id="user-role" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Admin" readonly />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-ink">Billing/Orders Preferences</h3>
+                <div class="mt-4 grid grid-cols-1 gap-4 text-sm">
+                  <div>
+                    <label for="orders-page-size" class="font-medium text-slate-700">Orders per page</label>
+                    <input type="number" id="orders-page-size" min="5" max="100" step="1" class="mt-1 w-40 rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="10" />
+                    <p class="mt-1 text-xs text-slate-500">Between 5 and 100</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" id="orders-group-default" class="h-4 w-4 rounded border-slate-300" />
+                    <label for="orders-group-default" class="font-medium text-slate-700">Group orders by customer by default</label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-ink">Preferences</h3>
+                <div class="mt-4 grid grid-cols-1 gap-4 text-sm">
+                  <div>
+                    <label for="currency" class="font-medium text-slate-700">Currency</label>
+                    <select id="currency" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200">
+                      <option value="INR">INR (Indian Rupee)</option>
+                      <option value="USD">USD (US Dollar)</option>
+                      <option value="EUR">EUR (Euro)</option>
+                    </select>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label for="date-format" class="font-medium text-slate-700">Date format</label>
+                      <select id="date-format" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200">
+                        <option value="dd MMM yyyy">05 Sep 2025</option>
+                        <option value="dd/MM/yyyy">05/09/2025</option>
+                        <option value="MM/dd/yyyy">09/05/2025</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="time-format" class="font-medium text-slate-700">Time format</label>
+                      <select id="time-format" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200">
+                        <option value="12">12-hour</option>
+                        <option value="24">24-hour</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="font-medium text-slate-700">Notifications</label>
+                    <div class="mt-2 grid grid-cols-1 gap-3 text-sm text-slate-700">
+                      <label class="inline-flex items-center gap-3"><input id="notif-email" type="checkbox" class="h-4 w-4 rounded border-slate-300"/> Email updates</label>
+                      <label class="inline-flex items-center gap-3"><input id="notif-sms" type="checkbox" class="h-4 w-4 rounded border-slate-300" /> SMS alerts</label>
+                      <label class="inline-flex items-center gap-3"><input id="notif-lowstock" type="checkbox" class="h-4 w-4 rounded border-slate-300"/> Low-stock reminders</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-ink">Receipt Customization</h3>
+                <div class="mt-4 grid grid-cols-1 gap-4 text-sm">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label for="rc-title" class="font-medium text-slate-700">Store title</label>
+                      <input type="text" id="rc-title" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="InvoiceFlow" />
+                    </div>
+                    <div>
+                      <label for="rc-subtitle" class="font-medium text-slate-700">Subtitle</label>
+                      <input type="text" id="rc-subtitle" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Manjeet Furnitures" />
+                    </div>
+                  </div>
+                  <div>
+                    <label for="rc-address" class="font-medium text-slate-700">Address</label>
+                    <textarea id="rc-address" rows="2" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Street, City, State - Pincode"></textarea>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label for="rc-phone" class="font-medium text-slate-700">Phone</label>
+                      <input type="text" id="rc-phone" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="+91 98xxxx xxxx" />
+                    </div>
+                    <div>
+                      <label for="rc-gstin" class="font-medium text-slate-700">GSTIN</label>
+                      <input type="text" id="rc-gstin" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="22AAAAA0000A1Z5" />
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label for="rc-copies" class="font-medium text-slate-700">Default print copies</label>
+                      <input type="number" id="rc-copies" min="1" max="5" class="mt-1 w-28 rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="2" />
+                    </div>
+                    <div>
+                      <label for="rc-paper" class="font-medium text-slate-700">Paper width</label>
+                      <select id="rc-paper" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200">
+                        <option value="80">80mm</option>
+                        <option value="58">58mm</option>
+                      </select>
+                    </div>
+                    <div class="flex items-end">
+                      <label class="inline-flex items-center gap-2">
+                        <input id="rc-show-tax" type="checkbox" class="h-4 w-4 rounded border-slate-300" />
+                        Show tax row
+                      </label>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label for="rc-footer1" class="font-medium text-slate-700">Footer line 1</label>
+                      <input type="text" id="rc-footer1" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Thank you for your purchase!" />
+                    </div>
+                    <div>
+                      <label for="rc-footer2" class="font-medium text-slate-700">Footer line 2</label>
+                      <input type="text" id="rc-footer2" class="mt-1 w-full rounded-xl border-slate-200 bg-slate-50/70 text-slate-700 focus:ring-brand-200" placeholder="Powered by InvoiceFlow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <div id="settings-dirty-bar" class="fixed bottom-4 left-1/2 z-20 -translate-x-1/2 hidden">
+          <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-card">
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-slate-600">Unsaved changes</span>
+              <button id="settings-discard" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium shadow-card">Discard</button>
+              <button id="settings-save" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-card">Save changes</button>
+            </div>
+          </div>
+        </div>
+        <div id="settings-toast" class="fixed top-4 right-4 z-50 space-y-2"></div>
+      </div>
+    </div>
+  </body>
+</html>

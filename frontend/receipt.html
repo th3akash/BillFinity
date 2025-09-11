@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thermal Receipt • 80mm</title>
+    <link rel="stylesheet" href="receipt.css" />
+  </head>
+  <body>
+    <div id="receipt" class="receipt">
+      <header class="rc-header">
+        <div class="rc-title" id="rc-title">InvoiceFlow</div>
+        <div class="rc-sub" id="rc-subtitle">Manjeet Furnitures</div>
+        <div class="rc-sub" id="rc-store-address"></div>
+        <div class="rc-sub" id="rc-phone" style="display:none"></div>
+        <div class="rc-sub" id="rc-gstin" style="display:none"></div>
+        <div class="rc-rule"></div>
+      </header>
+      <section class="rc-meta">
+        <div><span>Order:</span><b id="rc-order-id">—</b></div>
+        <div><span>Date:</span><b id="rc-date">—</b></div>
+        <div><span>Customer:</span><b id="rc-customer">—</b></div>
+        <div class="rc-rule"></div>
+      </section>
+      <section class="rc-lines">
+        <div class="rc-row rc-head">
+          <div class="rc-col item">Item</div>
+          <div class="rc-col qty">Qty</div>
+          <div class="rc-col amt">Amount</div>
+        </div>
+        <div id="rc-items"></div>
+        <div class="rc-rule"></div>
+      </section>
+      <section class="rc-totals">
+        <div class="rc-row"><div class="rc-col label">Subtotal</div><div class="rc-col value" id="rc-subtotal">—</div></div>
+        <div class="rc-row"><div class="rc-col label">Tax</div><div class="rc-col value" id="rc-tax">—</div></div>
+        <!-- Dynamic tax breakup rows will be injected here -->
+        <div id="rc-tax-breakup"></div>
+        <div class="rc-row total"><div class="rc-col label">Total</div><div class="rc-col value" id="rc-total">—</div></div>
+        <div class="rc-rule"></div>
+      </section>
+      <footer class="rc-footer">
+        <div class="rc-note" id="rc-footer1">Thank you for your purchase!</div>
+        <div class="rc-note" id="rc-footer2">Powered by InvoiceFlow</div>
+      </footer>
+    </div>
+
+    <div class="rc-actions no-print">
+      <button id="btn-print" class="rc-btn">Print</button>
+      <a href="orders.html" class="rc-btn secondary">Create New Order</a>
+    </div>
+
+    <script src="receipt.js"></script>
+  </body>
+  </html>

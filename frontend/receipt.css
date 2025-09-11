@@ -1,0 +1,50 @@
+/* 80mm thermal receipt styles */
+@page { size: 80mm auto; margin: 0; }
+
+html, body {
+  padding: 0; margin: 0;
+  background: #f1f5f9;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.receipt {
+  width: 80mm;
+  background: #fff;
+  color: #111827;
+  margin: 8px auto;
+  padding: 10px 8px;
+  box-shadow: 0 1px 8px rgba(0,0,0,.05);
+}
+
+.rc-header { text-align: center; }
+.rc-title { font-weight: 800; font-size: 14px; letter-spacing: .3px; }
+.rc-sub { font-size: 10px; color: #6b7280; }
+.rc-meta { font-size: 10px; margin-top: 4px; }
+.rc-meta > div { display: flex; justify-content: space-between; gap: 8px; }
+.rc-rule { border-top: 1px dashed #cbd5e1; margin: 6px 0; }
+
+.rc-lines { font-size: 10px; }
+.rc-row { display: grid; grid-template-columns: 1fr 32px 60px; align-items: start; gap: 6px; }
+.rc-row.rc-head { font-weight: 700; color: #374151; }
+.rc-col.item { word-break: break-word; }
+.rc-col.qty { text-align: right; }
+.rc-col.amt, .rc-col.value { text-align: right; }
+
+.rc-totals { font-size: 11px; }
+.rc-totals .rc-row { grid-template-columns: 1fr 60px; }
+.rc-totals .total { font-weight: 800; font-size: 12px; }
+
+.rc-footer { text-align: center; margin-top: 8px; }
+.rc-note { font-size: 10px; color: #6b7280; }
+
+.no-print { display: block; text-align: center; margin: 12px 0 24px; }
+.rc-btn { appearance: none; border: 1px solid #cbd5e1; background: white; color: #111827; padding: 8px 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.06); cursor: pointer; font-size: 12px; }
+.rc-btn.secondary { background: #0ea5e9; color: white; border-color: #0ea5e9; text-decoration: none; }
+.rc-btn + .rc-btn, .rc-btn + a { margin-left: 8px; }
+
+@media print {
+  html, body { background: white; }
+  .receipt { margin: 0; box-shadow: none; }
+  .no-print { display: none !important; }
+}
+

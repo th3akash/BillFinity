@@ -1,0 +1,33 @@
+html, body { 
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; 
+}
+
+/* Toast styles */
+.toast-success {
+  background-color: #D1FAE5;
+  border: 1px solid #10B981;
+  color: #065F46;
+}
+
+.toast-error {
+  background-color: #FEE2E2;
+  border: 1px solid #EF4444;
+  color: #7F1D1D;
+}
+
+/* Loading animation */
+.loading-spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
