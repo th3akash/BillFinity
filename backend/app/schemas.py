@@ -60,6 +60,7 @@ class ItemBase(BaseModel):
     price: Decimal = Decimal("0.00")
     stock: int = 0
     reorder_point: int = 0
+    gst_rate: Optional[int] = None  # GST percentage: 0,5,12,18,28
 
 class ItemCreate(ItemBase):
     pass
@@ -74,6 +75,7 @@ class ItemUpdate(BaseModel):
     price: Optional[Decimal] = None
     stock: Optional[int] = None
     reorder_point: Optional[int] = None
+    gst_rate: Optional[int] = None
 
 class ItemOut(ItemBase):
     id: int

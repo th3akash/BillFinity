@@ -10,23 +10,30 @@ function customerBadge(status) {
   return '<span class="inline-flex items-center rounded-full bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 ring-1 ring-inset ring-slate-600/10">Unknown</span>';
 }
 
-function renderCustomers(list) {
+function renderCustomers(list, totalsMap) {
   customersTbody.innerHTML = '';
   if (!Array.isArray(list) || list.length === 0) {
     customersTbody.innerHTML = '<tr class="bg-slate-50"><td class="px-4 py-4 text-center text-slate-600" colspan="8">No customers found</td></tr>';
     return;
   }
 
+  // currency format helper
+  const fmtINR = (v) => {
+    const n = Number(v);
+    if (!Number.isFinite(n)) return '';
+    try { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(n).replace(/^₹\s?/, '₹'); } catch(_) { return '₹' + n.toFixed(2); }
+  };
+
   const rows = list.map(c => {
     const avatar = c.avatar || 'https://i.pravatar.cc/80?img=1';
     return `
-      <tr class="bg-white">
+      <tr class="bg-white" data-customer-id="${c.id}" data-id="${c.id}">
         <td class="px-4 py-4">
           <div class="flex items-center gap-3">
             <img src="${avatar}" class="h-9 w-9 rounded-full" alt="avatar"/>
             <div>
               <div class="font-semibold text-ink">${c.name || ''}</div>
-              <div class="text-xs text-slate-500">${c.company || ''}</div>
+              <div class="text-xs text-slate-500">${c.company_name || ''}</div>
             </div>
           </div>
         </td>
@@ -34,11 +41,11 @@ function renderCustomers(list) {
         <td class="px-4 py-4">${c.phone || ''}</td>
         <td class="px-4 py-4">${c.gstin || ''}</td>
         <td class="px-4 py-4">${c.address || ''}</td>
-        <td class="px-4 py-4 font-medium">${c.total_spent != null ? '\u20b9' + c.total_spent : ''}</td>
+        <td class="px-4 py-4 font-medium">${(c.id!=null && totalsMap && totalsMap.get(c.id)!=null) ? fmtINR(totalsMap.get(c.id)) : ''}</td>
         <td class="px-4 py-4">${customerBadge(c.status)}</td>
         <td class="px-4 py-4">
           <div class="flex items-center gap-2">
-              <button class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 shadow-card">View</button>
+              <button class="view-customer rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 shadow-card">View</button>
               <button class="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 shadow-card">Edit</button>
               <button class="delete-customer rounded-lg border border-rose-200 bg-rose-50 text-rose-700 px-2.5 py-1.5 shadow-card">Delete</button>
           </div>
@@ -53,10 +60,23 @@ async function fetchCustomers() {
   customersTbody.innerHTML = '<tr class="bg-white"><td class="px-4 py-4 text-center text-slate-500" colspan="8">Loading…</td></tr>';
   try {
     const token = localStorage.IF_TOKEN;
-    const res = await fetch(baseUrl + '/customers', { headers: { 'Authorization': token } });
-    if (!res.ok) throw new Error(await res.text());
-    const data = await res.json();
-    renderCustomers(data);
+    const [resCustomers, resOrders] = await Promise.all([
+      fetch(baseUrl + '/customers', { headers: { 'Authorization': token } }),
+      fetch(baseUrl + '/orders', { headers: { 'Authorization': token } })
+    ]);
+    if (!resCustomers.ok) throw new Error(await resCustomers.text());
+    if (!resOrders.ok) throw new Error(await resOrders.text());
+    const data = await resCustomers.json();
+    const orders = await resOrders.json();
+    const totalsMap = new Map();
+    if (Array.isArray(orders)) {
+      for (const o of orders) {
+        const cid = o.customer_id;
+        const t = parseFloat(o.total || 0) || 0;
+        if (cid != null) totalsMap.set(cid, (totalsMap.get(cid) || 0) + t);
+      }
+    }
+    renderCustomers(data, totalsMap);
   } catch (err) {
     customersTbody.innerHTML = `<tr class="bg-rose-50"><td class="px-4 py-4 text-center text-rose-700" colspan="8">Error loading customers: ${String(err)}</td></tr>`;
   }
@@ -96,6 +116,15 @@ customersTbody && customersTbody.addEventListener('click', (e) => {
   if (!deleteModal) return;
   deleteModal.classList.remove('hidden'); deleteModal.classList.add('flex');
   deleteModal.dataset.pendingId = id;
+});
+
+// Open viewer for quick details
+customersTbody && customersTbody.addEventListener('click', (e) => {
+  const viewBtn = e.target.closest('.view-customer');
+  if (!viewBtn) return;
+  const tr = e.target.closest('tr');
+  const id = tr && (tr.getAttribute('data-customer-id') || tr.getAttribute('data-id'));
+  if (id && window.openViewer) { try { window.openViewer('customer', id); } catch(_){} }
 });
 
 deleteConfirmBtn && deleteConfirmBtn.addEventListener('click', async () => {

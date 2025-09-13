@@ -20,7 +20,8 @@ function renderItems(items) {
     const img = item.image || 'https://placehold.co/80x80/E2E8F0/E2E8F0/svg?text=Item';
     const price = item.price != null ? '\u20b9' + item.price : '';
     const reorder = item.reorder_point != null ? item.reorder_point : '';
-    const status = item.status || (item.in_stock > 0 ? 'In Stock' : 'Out of Stock');
+    const qty = (item.stock != null ? item.stock : (item.in_stock != null ? item.in_stock : 0));
+    const status = item.status || (qty > 0 ? 'In Stock' : 'Out of Stock');
 
   return `
   <tr data-item-id="${item.id}" class="bg-white">
@@ -32,7 +33,7 @@ function renderItems(items) {
         </td>
         <td class="px-4 py-4">${item.sku || ''}</td>
         <td class="px-4 py-4 text-slate-700">${item.category || ''}</td>
-        <td class="px-4 py-4 font-semibold">${item.in_stock != null ? item.in_stock : ''}</td>
+        <td class="px-4 py-4 font-semibold">${qty}</td>
         <td class="px-4 py-4">${price}</td>
         <td class="px-4 py-4 font-medium">${reorder}</td>
         <td class="px-4 py-4">${badgeForStatus(status)}</td>
@@ -124,8 +125,9 @@ function openItemModal(data = null) {
   document.getElementById('item-sku').value = data && data.sku ? data.sku : '';
   document.getElementById('item-category').value = data && data.category ? data.category : '';
   document.getElementById('item-price').value = data && data.price ? data.price : '';
-  document.getElementById('item-stock').value = data && (data.in_stock != null ? data.in_stock : data.stock) ? (data.in_stock != null ? data.in_stock : data.stock) : '';
+document.getElementById('item-stock').value = data && (data.stock != null ? data.stock : data.in_stock) ? (data.stock != null ? data.stock : data.in_stock) : '';
   document.getElementById('item-reorder').value = data && data.reorder_point ? data.reorder_point : '';
+  try { document.getElementById('item-gst').value = (data && (data.gst_rate != null) ? String(data.gst_rate) : '18'); } catch(_){ }
   itemFormError.classList.add('hidden');
   itemModal.classList.remove('hidden');
   itemModal.classList.add('flex');
@@ -153,6 +155,7 @@ itemForm && itemForm.addEventListener('submit', async (e) => {
     price: parseFloat(document.getElementById('item-price').value) || 0,
     stock: parseInt(document.getElementById('item-stock').value) || 0,
     reorder_point: parseInt(document.getElementById('item-reorder').value) || 0,
+    gst_rate: (function(){ const v = parseInt(document.getElementById('item-gst').value || '18', 10); return [0,5,12,18,28].includes(v) ? v : 18; })(),
   };
 
   // Client-side validation
@@ -238,7 +241,7 @@ itemsTbody && itemsTbody.addEventListener('click', (e) => {
         const list = await res.json();
         const item = list.find(i => String(i.id) === String(itemId));
         if (!item) throw new Error('Item not found');
-        const newStock = (item.in_stock != null ? item.in_stock : item.stock || 0) + add;
+        const newStock = ((item.stock != null ? item.stock : item.in_stock) || 0) + add;
         const patch = await fetch(baseUrl + `/items/${itemId}/stock`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', 'Authorization': token },

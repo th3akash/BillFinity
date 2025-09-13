@@ -191,6 +191,19 @@
                   </div>
                 </div>
 
+                <div class="grid grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-sm text-slate-600">GST Rate (%)</label>
+                    <select id="item-gst" class="mt-1 w-full rounded-lg border border-slate-200 p-2">
+                      <option value="0">0%</option>
+                      <option value="5">5%</option>
+                      <option value="12">12%</option>
+                      <option value="18" selected>18%</option>
+                      <option value="28">28%</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="flex items-center justify-end gap-2">
                   <button type="button" id="item-cancel-btn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Cancel</button>
                   <button type="submit" id="item-save-btn" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white">Save</button>

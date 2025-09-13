@@ -42,7 +42,7 @@
         <nav class="mt-8 space-y-1 text-sm">
           <a href="index.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 bg-slate-100 text-ink font-medium">
             <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand-600 shadow-sm">
-              <dotlottie-player class="dashboard-lottie" src="assets/Dynamic Dashboard Icon.lottie" background="transparent" style="width:24px;height:24px; transform: scale(2.5); transform-origin: center; display:inline-block;"></dotlottie-player>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z"/></svg>
             </span>
             Dashboard
           </a>
@@ -75,6 +75,12 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a7 7 0 0 1 14 0H3Zm18-3h-2v-2h2v2Zm0-4h-2V6h2z"/></svg>
             </span>
             User Management
+          </a>
+          <a href="connectors.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M8 8h3a1 1 0 1 1 0 2H8a3 3 0 1 0 0 6h3a1 1 0 1 1 0 2H8a5 5 0 1 1 0-10Zm5 0h3a5 5 0 1 1 0 10h-3a1 1 0 1 1 0-2h3a3 3 0 1 0 0-6h-3a1 1 0 1 1 0-2Z"/></svg>
+            </span>
+            Connectors
           </a>
           <a href="settings.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
             <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
@@ -201,19 +207,19 @@
                     <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44">
                         <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Yesterday</a>
+                            <a href="#" data-range="yesterday" class="block px-4 py-2 hover:bg-gray-100">Yesterday</a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Today</a>
+                            <a href="#" data-range="today" class="block px-4 py-2 hover:bg-gray-100">Today</a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 7 days</a>
+                            <a href="#" data-range="7" class="block px-4 py-2 hover:bg-gray-100">Last 7 days</a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 30 days</a>
+                            <a href="#" data-range="30" class="block px-4 py-2 hover:bg-gray-100">Last 30 days</a>
                           </li>
                           <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 90 days</a>
+                            <a href="#" data-range="90" class="block px-4 py-2 hover:bg-gray-100">Last 90 days</a>
                           </li>
                         </ul>
                     </div>

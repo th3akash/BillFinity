@@ -55,16 +55,20 @@ tailwind.config = {
     }
     return out;
   }
-  function computeUsersSeries(users, from, to){
+  function computeSalesSeries(orders, from, to){
     const days = dateRangeDays(from, to);
     const map = new Map(days.map(d => [dayKey(d), 0]));
-    for (const u of (Array.isArray(users)?users:[])){
-      const k = dayKey(u.created_at || u.updated_at || Date.now());
-      if (map.has(k)) map.set(k, (map.get(k)||0) + 1);
+    for (const o of (Array.isArray(orders)?orders:[])){
+      const st = (o.status||'').toString().toLowerCase();
+      if (st !== 'completed') continue;
+      const d = (window.asDate ? window.asDate(o.created_at || o.updated_at || Date.now()) : new Date(o.created_at || o.updated_at || Date.now()));
+      const k = dayKey(d);
+      const amt = parseFloat(o.total||0) || 0;
+      if (map.has(k)) map.set(k, (map.get(k)||0) + amt);
     }
     return { labels: days.map(d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`), values: days.map(d => map.get(dayKey(d))||0) };
   }
-  function renderUsersChart(series){
+  function renderSalesChart(series){
     const el = document.getElementById('area-chart'); if (!el) return;
     if (!window.ApexCharts) return;
     if (el._apexChart) { try { el._apexChart.destroy(); } catch(_){} el._apexChart = null; }
@@ -72,7 +76,7 @@ tailwind.config = {
     const chart = new ApexCharts(el, {
       chart: { type: 'area', height: 260, toolbar: { show: false }, foreColor: isDark ? '#CBD5E1' : undefined },
       theme: { mode: isDark ? 'dark' : 'light' },
-      series: [{ name: 'Users', data: series.values }],
+      series: [{ name: 'Sales', data: series.values }],
       xaxis: { categories: series.labels, labels: { rotate: 0, style: { colors: isDark ? '#94a3b8' : '#94a3b8' } } },
       yaxis: { labels: { style: { colors: isDark ? '#94a3b8' : '#94a3b8' } } },
       colors: ['#13A4EC'],
@@ -105,6 +109,11 @@ tailwind.config = {
       const items = await itemsRes.json();
       const users = await usersRes.json();
       const itemById = new Map(Array.isArray(items) ? items.map(i => [i.id, i]) : []);
+      const custById = new Map(Array.isArray(customers) ? customers.map(c => [c.id, c]) : []);
+      // Expose caches for other helpers/viewer
+      window._allOrders = Array.isArray(orders) ? orders : [];
+      window._itemsCache = Array.isArray(items) ? items : [];
+      window._customersCache = Array.isArray(customers) ? customers : [];
       window._usersCache = Array.isArray(users) ? users : [];
 
       // Compute totals
@@ -133,33 +142,51 @@ tailwind.config = {
       if (ordersCompletedEl) ordersCompletedEl.textContent = completed;
       if (ordersCancelledEl) ordersCancelledEl.textContent = cancelled;
 
-      // Update Total Sales card (last 30 days + delta vs previous 30 days)
+      // Compute deltas for cards
       try {
         const now = new Date();
-        const from = new Date(now.getFullYear(), now.getMonth(), now.getDate()-30);
-        const prevFrom = new Date(now.getFullYear(), now.getMonth(), now.getDate()-60);
-        const prevTo = new Date(now.getFullYear(), now.getMonth(), now.getDate()-30);
-        let cur = 0, prev = 0;
+        // Sales delta: last 30 vs previous 30 (completed orders only)
+        const curFrom30 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-30);
+        const prevFrom30 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-60);
+        const prevTo30 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-30);
+        let curSales = 0, prevSales = 0;
+        for (const o of (Array.isArray(orders)?orders:[])){
+          const st = (o.status||'').toString().toLowerCase(); if (st !== 'completed') continue;
+          const d = window.asDate ? window.asDate(o.created_at || o.updated_at || now) : new Date(o.created_at || o.updated_at || now);
+          const amt = parseFloat(o.total||0) || 0;
+          if (d >= curFrom30 && d < now) curSales += amt; else if (d >= prevFrom30 && d < prevTo30) prevSales += amt;
+        }
+        const salesDelta = prevSales ? ((curSales - prevSales)/prevSales)*100 : (curSales>0?100:0);
+        const salesDeltaEl = document.getElementById('total-sales-change');
+        if (salesDeltaEl){ const up = salesDelta >= 0; salesDeltaEl.textContent = `${up? '↗︎':'↘︎'} ${Math.abs(salesDelta).toFixed(1)}%`; salesDeltaEl.classList.toggle('text-emerald-600', up); salesDeltaEl.classList.toggle('text-rose-600', !up); }
+
+        // Customers delta: new created last 30 vs previous 30
+        const custCur = (Array.isArray(customers)?customers:[]).filter(c => { const d = new Date(c.created_at); return d>=curFrom30 && d<now; }).length;
+        const custPrev = (Array.isArray(customers)?customers:[]).filter(c => { const d = new Date(c.created_at); return d>=prevFrom30 && d<prevTo30; }).length;
+        const custDelta = custPrev ? ((custCur - custPrev)/custPrev)*100 : (custCur>0?100:0);
+        const custDeltaEl = document.getElementById('total-customers-change');
+        if (custDeltaEl){ const up = custDelta >= 0; custDeltaEl.textContent = `${up? '↗︎':'↘︎'} ${Math.abs(custDelta).toFixed(1)}%`; custDeltaEl.classList.toggle('text-emerald-600', up); custDeltaEl.classList.toggle('text-rose-600', !up); }
+
+        // Orders completed/cancelled delta: last 7 vs previous 7
+        const curFrom7 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-7);
+        const prevFrom7 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-14);
+        const prevTo7 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-7);
+        let curComp=0, prevComp=0, curCanc=0, prevCanc=0;
         for (const o of (Array.isArray(orders)?orders:[])){
           const st = (o.status||'').toString().toLowerCase();
-          if (st !== 'completed') continue;
-          const d = (window.asDate ? window.asDate(o.created_at || o.updated_at || now) : new Date(o.created_at || o.updated_at || now));
-          const amt = parseFloat(o.total||0) || 0;
-          if (d >= from && d < now) cur += amt;
-          else if (d >= prevFrom && d < prevTo) prev += amt;
+          const d = window.asDate ? window.asDate(o.created_at || o.updated_at || now) : new Date(o.created_at || o.updated_at || now);
+          const inCur = d>=curFrom7 && d<now; const inPrev = d>=prevFrom7 && d<prevTo7;
+          if (st.includes('complete')) { if (inCur) curComp++; else if (inPrev) prevComp++; }
+          if (st.includes('cancel')) { if (inCur) curCanc++; else if (inPrev) prevCanc++; }
         }
-        const amtEl = document.getElementById('dash-total-sales-amount');
-        const deltaEl = document.getElementById('dash-total-sales-delta');
-        const fmt = (v)=>{ try { return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(v).replace(/^₹\s?/, '₹'); } catch(_) { return '₹'+v.toFixed(0);} };
-        if (amtEl) amtEl.textContent = fmt(cur);
-        if (deltaEl) {
-          const delta = prev ? ((cur - prev) / prev) * 100 : (cur>0?100:0);
-          const up = delta >= 0;
-          deltaEl.textContent = `${up?'+':''}${delta.toFixed(1)}%`;
-          deltaEl.classList.toggle('text-emerald-600', up);
-          deltaEl.classList.toggle('text-rose-600', !up);
-        }
-      } catch(_) {}
+        const compDelta = prevComp ? ((curComp - prevComp)/prevComp)*100 : (curComp>0?100:0);
+        const cancDelta = prevCanc ? ((curCanc - prevCanc)/prevCanc)*100 : (curCanc>0?100:0);
+        const compEl = document.getElementById('orders-completed-change'); if (compEl){ const up = compDelta >= 0; compEl.textContent = `${up? '↗︎':'↘︎'} ${Math.abs(compDelta).toFixed(1)}%`; compEl.classList.toggle('text-emerald-600', up); compEl.classList.toggle('text-rose-600', !up); }
+        const cancEl = document.getElementById('orders-cancelled-change'); if (cancEl){ const good = cancDelta <= 0; cancEl.textContent = `${cancDelta>=0? '↗︎':'↘︎'} ${Math.abs(cancDelta).toFixed(1)}%`; cancEl.classList.toggle('text-emerald-600', good); cancEl.classList.toggle('text-rose-600', !good); }
+      } catch(_){}
+
+      // Initial Sales chart + totals (default last 7 days)
+      try { updateSalesCard('7'); } catch(_){}
 
       // Top selling: compute simple counts from order.items
       try {
@@ -206,10 +233,42 @@ tailwind.config = {
         // ignore render errors
       }
 
-      // Render users area chart (default last 7 days)
+      // Recent Orders table
       try {
-        updateUsersCard('7');
-      } catch (_) {}
+        const tbody = document.getElementById('orders-tbody');
+        if (tbody && Array.isArray(orders)) {
+          const list = orders.slice(0, 6);
+          if (!list.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">No recent orders</td></tr>';
+          } else {
+            const rows = list.map(o => {
+              const cust = custById.get(o.customer_id);
+              const custName = (cust && (cust.name || cust.email || cust.phone)) || `#${o.customer_id}`;
+              const itemsHtml = Array.isArray(o.items) ? o.items.map(it => {
+                const rec = itemById.get(it.item_id) || {};
+                const label = rec.name || rec.sku || `Item ${it.item_id}`;
+                const qty = Number(it.qty || 1) || 1;
+                return `${qty}× ${label}`;
+              }).join(', ') : '';
+              const total = (typeof o.total !== 'undefined') ? `\u20b9${parseFloat(o.total||0).toLocaleString('en-IN')}` : '';
+              const status = (o.status||'').toString();
+              const dateStr = (window.formatDate ? window.formatDate(o.created_at||o.date||Date.now()) : new Date(o.created_at||o.date||Date.now()).toLocaleString('en-IN'));
+              return `
+                <tr class="bg-white">
+                  <td class="px-4 py-4 font-medium text-ink">${o.id}</td>
+                  <td class="px-4 py-4">${custName}</td>
+                  <td class="px-4 py-4 text-slate-700">${itemsHtml}</td>
+                  <td class="px-4 py-4 font-semibold">${total}</td>
+                  <td class="px-4 py-4">${status.charAt(0).toUpperCase()+status.slice(1)}</td>
+                  <td class="px-4 py-4 text-slate-500">${dateStr}</td>
+                </tr>`;
+            }).join('');
+            tbody.innerHTML = rows;
+          }
+        }
+      } catch(_) {}
+
+      // Sales chart already initialized above
     } catch (err) {
       // Silent failure: keep existing values, but log for debugging
       console.error('dashboard metrics error', err);
@@ -231,28 +290,29 @@ tailwind.config = {
     return { from, to, label };
   }
 
-  function updateUsersCard(rangeKey){
+  function updateSalesCard(rangeKey){
     const { from, to, label } = rangeFromKey(rangeKey);
-    const list = Array.isArray(window._usersCache) ? window._usersCache : [];
-    const series = computeUsersSeries(list, from, to);
-    renderUsersChart(series);
+    const orders = Array.isArray(window._allOrders) ? window._allOrders : [];
+    const series = computeSalesSeries(orders, from, to);
+    renderSalesChart(series);
 
-    // Total users in range
-    const inRange = list.filter(u => { const d = new Date(u.created_at); return d>=from && d<=to; }).length;
-    const labelEl = document.getElementById('users-range-label'); if (labelEl) labelEl.textContent = label;
-    const totalEl = document.getElementById('users-total'); if (totalEl) totalEl.textContent = String(inRange);
-    const totalLblEl = document.getElementById('users-total-label'); if (totalLblEl) totalLblEl.textContent = `Users ${label.toLowerCase()}`;
-
-    // Delta vs previous equal period
+    // Total sales in range and delta vs previous period
+    const sumIn = orders.reduce((s,o)=>{
+      const st=(o.status||'').toString().toLowerCase(); if(st!=='completed') return s; const d=new Date(o.created_at||o.updated_at||Date.now()); if(d>=from && d<=to) return s + (parseFloat(o.total||0)||0); return s; },0);
     const days = Math.max(1, Math.round((to - from) / (24*3600*1000)) + 1);
     const prevTo = new Date(from); prevTo.setHours(23,59,59,999);
     const prevFrom = new Date(prevTo); prevFrom.setDate(prevFrom.getDate() - (days-1)); prevFrom.setHours(0,0,0,0);
-    const prevCount = list.filter(u => { const d = new Date(u.created_at); return d>=prevFrom && d<=prevTo; }).length;
-    const delta = prevCount ? ((inRange - prevCount)/prevCount)*100 : (inRange>0?100:0);
-    const deltaEl = document.getElementById('users-delta'); const wrap = document.getElementById('users-delta-wrap'); const icon = document.getElementById('users-delta-icon');
-    if (deltaEl) deltaEl.textContent = `${delta>=0?'+':''}${delta.toFixed(1)}%`;
-    if (wrap) { wrap.classList.toggle('text-emerald-600', delta>=0); wrap.classList.toggle('text-rose-600', delta<0); }
-    if (icon) { icon.style.transform = delta>=0 ? 'rotate(0deg)' : 'rotate(180deg)'; }
+    const sumPrev = orders.reduce((s,o)=>{
+      const st=(o.status||'').toString().toLowerCase(); if(st!=='completed') return s; const d=new Date(o.created_at||o.updated_at||Date.now()); if(d>=prevFrom && d<=prevTo) return s + (parseFloat(o.total||0)||0); return s; },0);
+    const fmt = (v)=>{ try { return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(v).replace(/^₹\s?/, '₹'); } catch(_) { return '₹'+(v||0).toFixed(0);} };
+    const amtEl = document.getElementById('chart-total-sales'); if (amtEl) amtEl.textContent = fmt(sumIn);
+    const deltaEl = document.getElementById('chart-total-change'); if (deltaEl){
+      const delta = sumPrev ? ((sumIn - sumPrev)/sumPrev)*100 : (sumIn>0?100:0);
+      const up = delta >= 0;
+      deltaEl.textContent = `${up?'+':''}${delta.toFixed(1)}%`;
+      deltaEl.classList.toggle('text-emerald-600', up);
+      deltaEl.classList.toggle('text-rose-600', !up);
+    }
   }
 
   function initDashboard() {
@@ -277,7 +337,7 @@ tailwind.config = {
       });
     });
 
-    // Range dropdown for users chart
+    // Range dropdown for sales chart
     try {
       const btn = document.getElementById('dropdownDefaultButton');
       const dd = document.getElementById('lastDaysdropdown');
@@ -288,7 +348,7 @@ tailwind.config = {
           if (!a) return;
           e.preventDefault();
           const key = a.getAttribute('data-range');
-          updateUsersCard(key);
+          updateSalesCard(key);
           dd.classList.add('hidden');
         });
         document.addEventListener('click', (e)=>{ if (!dd.contains(e.target) && e.target !== btn) dd.classList.add('hidden'); });
@@ -320,8 +380,9 @@ tailwind.config = {
         const parts = t.split(' ');
         const hm = parts[0] || '';
         const ap = (parts[1] || '').toUpperCase();
-        const hmEl = document.getElementById('header-time-hm');
-        const apEl = document.getElementById('header-time-ap');
+        // Support both new and legacy header time element IDs
+        const hmEl = document.getElementById('header-time-hm') || document.getElementById('current-time');
+        const apEl = document.getElementById('header-time-ap') || document.getElementById('time-period');
         if (hmEl) hmEl.textContent = hm;
         if (apEl) apEl.textContent = ap;
       } catch(_){}

@@ -57,7 +57,7 @@ def update_item(item_id: int, payload: schemas.ItemUpdate, db: Session = Depends
             raise HTTPException(status_code=400, detail="SKU already exists")
 
     # Apply updates
-    for field in ("name", "sku", "category", "price", "stock", "reorder_point"):
+    for field in ("name", "sku", "category", "price", "stock", "reorder_point", "gst_rate"):
         val = getattr(payload, field, None)
         if val is not None:
             setattr(item, field if field != 'reorder_point' else 'reorder_point', val)
