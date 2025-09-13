@@ -1,4 +1,13 @@
 (function(){
+  const baseUrl = 'http://127.0.0.1:8000';
+  function authHeaders(){
+    const h = { };
+    try {
+      let t = localStorage.getItem('IF_TOKEN') || localStorage.IF_TOKEN;
+      if (t){ if (!t.startsWith('Bearer ')) t = `Bearer ${t}`; h['Authorization'] = t; }
+    } catch(_){ }
+    return h;
+  }
   function asDate(v){
     if (v instanceof Date) return v;
     if (v == null) return new Date(NaN);
@@ -16,6 +25,14 @@
   function INR(n){ try { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(n||0); } catch(_) { return '₹' + (n||0); } }
   function el(id){ return document.getElementById(id); }
   function getParam(name){ try { const u=new URL(location.href); return u.searchParams.get(name); } catch(_) { return null; } }
+  async function fetchOrderById(id){
+    try {
+      if (!id) return null;
+      const res = await fetch(`${baseUrl}/orders/${encodeURIComponent(id)}`, { headers: authHeaders() });
+      if (res.ok) return await res.json();
+    } catch(_){}
+    return null;
+  }
 
   function render(data){
     if (!data){
@@ -117,8 +134,39 @@
     } catch(_) {}
   }
 
+  async function markComplete(order){
+    try {
+      const id = order && (order.id || order.order_id);
+      if (!id) return;
+      await fetch(`${baseUrl}/orders/${id}/complete`, { method: 'POST', headers: authHeaders() });
+    } catch(_){ /* non-blocking */ }
+  }
+
+  function printSequentialSameWindow(copies, onDone){
+    const total = Math.max(1, parseInt(copies || 1, 10));
+    let left = total;
+    let watchdog = null;
+    let pending = false;
+    function cleanup(){ try { window.removeEventListener('afterprint', handleAfter); } catch(_){} try { window.removeEventListener('focus', handleFocus); } catch(_){} if (watchdog) clearTimeout(watchdog); }
+    function handleAfter(){ if (!pending) return; pending = false; step(); }
+    function handleFocus(){ if (!pending) return; setTimeout(() => { if (pending) { pending = false; step(); } }, 200); }
+    function armWatchdog(){ if (watchdog) clearTimeout(watchdog); watchdog = setTimeout(() => { if (pending) { pending = false; step(); } }, 6000); }
+    function schedule(){ pending = true; armWatchdog(); try { window.print(); } catch(_) { pending = false; step(); } }
+    function step(){ left -= 1; if (left > 0) setTimeout(schedule, 350); else { cleanup(); if (typeof onDone === 'function') onDone(); } }
+    try { window.addEventListener('afterprint', handleAfter); } catch(_){}
+    try { window.addEventListener('focus', handleFocus); } catch(_){}
+    setTimeout(schedule, 150);
+  }
+
   function init(){
-    document.getElementById('btn-print')?.addEventListener('click', function(){ window.print(); });
+    const printBtn = document.getElementById('btn-print');
+    if (printBtn) printBtn.addEventListener('click', function(){
+      let copiesToPrint = 1;
+      try { const r = JSON.parse(localStorage.getItem('IF_RECEIPT_SETTINGS') || '{}'); copiesToPrint = Math.max(1, parseInt(r.copies || 1, 10)); } catch(_) {}
+      // Ensure store settings applied before printing
+      try { storeReady.finally(() => printSequentialSameWindow(copiesToPrint)); }
+      catch(_) { printSequentialSameWindow(copiesToPrint); }
+    });
     // Apply receipt UI settings
     let rcs = {};
     try { rcs = JSON.parse(localStorage.getItem('IF_RECEIPT_SETTINGS') || '{}'); } catch(_) {}
@@ -128,35 +176,71 @@
         style.textContent = '@page{size:58mm auto;margin:0} .receipt{width:58mm}';
         document.head.appendChild(style);
       }
-      if (rcs.title) { const t = document.getElementById('rc-title'); if (t) t.textContent = rcs.title; }
-      if (rcs.subtitle) { const s = document.getElementById('rc-subtitle'); if (s) s.textContent = rcs.subtitle; }
-      if (rcs.address) { const a = document.getElementById('rc-store-address'); if (a) a.textContent = rcs.address; }
-      if (rcs.phone) { const p = document.getElementById('rc-phone'); if (p){ p.textContent = rcs.phone; p.style.display='block'; } }
-      if (rcs.gstin) { const g = document.getElementById('rc-gstin'); if (g){ g.textContent = 'GSTIN: ' + rcs.gstin; g.style.display='block'; } }
-      if (typeof rcs.show_tax === 'boolean' && !rcs.show_tax){
-        const taxRow = document.getElementById('rc-tax')?.closest('.rc-row');
-        if (taxRow) taxRow.style.display = 'none';
-        const breakup = document.getElementById('rc-tax-breakup');
-        if (breakup) breakup.style.display = 'none';
-      }
+      // Identity (title/address/phone/GSTIN) is sourced from backend General Settings below.
+      // Apply optional custom footers if present in local settings.
       if (rcs.footer1) { const f1 = document.getElementById('rc-footer1'); if (f1) f1.textContent = rcs.footer1; }
       if (rcs.footer2) { const f2 = document.getElementById('rc-footer2'); if (f2) f2.textContent = rcs.footer2; }
     } catch(_) {}
+
+    // Fetch store details from backend and override company info on receipt
+    const storeReady = (async () => {
+      try {
+        const res = await fetch(baseUrl + '/settings', { headers: authHeaders() });
+        if (res.ok){
+          const s = await res.json();
+          const t = document.getElementById('rc-title'); if (t) t.textContent = (s.company_name || '').trim() || 'InvoiceFlow';
+          const a = document.getElementById('rc-store-address'); if (a) a.textContent = (s.address || '').trim();
+          const p = document.getElementById('rc-phone'); if (p){ const v=(s.phone||'').trim(); if (v) { p.textContent=v; p.style.display='block'; } }
+          const g = document.getElementById('rc-gstin'); if (g){ const v=(s.gstin||'').trim(); if (v) { g.textContent = 'GSTIN: ' + v; g.style.display='block'; } }
+        }
+      } catch(_){}
+      try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch(_){}
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    })();
     let payload = null;
     try { payload = JSON.parse(sessionStorage.getItem('IF_RECEIPT_ORDER') || 'null'); } catch(_) {}
     if (!payload){ try { payload = JSON.parse(sessionStorage.getItem('IF_LAST_ORDER') || 'null'); } catch(_) {}
     }
-    render(payload);
+    const qid = getParam('id') || getParam('order_id');
+    let currentOrderData = null;
+    const orderReady = (async () => {
+      if (payload) return payload;
+      const fetched = await fetchOrderById(qid);
+      return fetched || null;
+    })();
+    orderReady.then((data)=>{ currentOrderData = data; render(data || payload); }).catch(()=> render(payload));
+    // Mark order complete after printing once (auto or manual)
+    let completedOnce = false;
+    function afterPrint(){
+      if (completedOnce) return;
+      completedOnce = true;
+      const closeAfter = getParam('close') === '1';
+      try { markComplete(currentOrderData || payload); } catch(_){ }
+      if (closeAfter) { try { window.close(); } catch(_){} }
+    }
+    try { window.addEventListener('afterprint', afterPrint); } catch(_){ }
+
     if (getParam('auto') === '1') {
-      // copies from URL takes precedence, else from settings
       const copies = Math.max(1, parseInt(getParam('copies') || String(rcs.copies || 1), 10));
-      let i = 0;
-      function doPrint(){
-        try { window.print(); } catch(_){ }
-        i += 1;
-        if (i < copies) setTimeout(doPrint, 300);
+      const seq = getParam('seq') === '1';
+      const closeAfter = getParam('close') === '1';
+      try {
+        Promise.allSettled([storeReady, orderReady]).finally(() => {
+          if (seq) {
+            printSequentialSameWindow(copies, () => { if (closeAfter) { try { window.close(); } catch(_){} } afterPrint(); });
+          } else {
+            setTimeout(() => { try { window.print(); } catch(_){ } }, 120);
+          }
+        });
+      } catch(_) {
+        orderReady.finally(() => {
+          if (seq) {
+            printSequentialSameWindow(copies, () => { if (closeAfter) { try { window.close(); } catch(_){} } afterPrint(); });
+          } else {
+            setTimeout(() => { try { window.print(); } catch(_){ } }, 120);
+          }
+        });
       }
-      setTimeout(doPrint, 100);
     }
   }
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();

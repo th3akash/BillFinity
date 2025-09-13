@@ -4,38 +4,43 @@
 html, body {
   padding: 0; margin: 0;
   background: #f1f5f9;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Dense, clean font for thermal printers */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .receipt {
+  box-sizing: border-box;
   width: 80mm;
   background: #fff;
-  color: #111827;
+  color: #000;
   margin: 8px auto;
-  padding: 10px 8px;
+  padding: 6mm 4mm 8mm;
   box-shadow: 0 1px 8px rgba(0,0,0,.05);
+  line-height: 1.35;
 }
 
 .rc-header { text-align: center; }
-.rc-title { font-weight: 800; font-size: 14px; letter-spacing: .3px; }
-.rc-sub { font-size: 10px; color: #6b7280; }
-.rc-meta { font-size: 10px; margin-top: 4px; }
+.rc-title { font-weight: 800; font-size: 17px; letter-spacing: .2px; }
+.rc-sub { font-size: 11px; color: #000; }
+.rc-meta { font-size: 12px; margin-top: 6px; }
 .rc-meta > div { display: flex; justify-content: space-between; gap: 8px; }
-.rc-rule { border-top: 1px dashed #cbd5e1; margin: 6px 0; }
+.rc-rule { border-top: 1px dashed #000; margin: 8px 0; }
 
-.rc-lines { font-size: 10px; }
-.rc-row { display: grid; grid-template-columns: 1fr 32px 60px; align-items: start; gap: 6px; }
-.rc-row.rc-head { font-weight: 700; color: #374151; }
+.rc-lines { font-size: 12px; }
+.rc-row { display: grid; grid-template-columns: 1fr 32px 72px; align-items: start; gap: 6px; }
+.rc-row.rc-head { font-weight: 700; color: #000; }
 .rc-col.item { word-break: break-word; }
 .rc-col.qty { text-align: right; }
-.rc-col.amt, .rc-col.value { text-align: right; }
+.rc-col.amt, .rc-col.value { text-align: right; white-space: nowrap; }
 
-.rc-totals { font-size: 11px; }
-.rc-totals .rc-row { grid-template-columns: 1fr 60px; }
-.rc-totals .total { font-weight: 800; font-size: 12px; }
+.rc-totals { font-size: 13px; }
+.rc-totals .rc-row { grid-template-columns: 1fr 72px; }
+.rc-totals .total { font-weight: 800; font-size: 14px; }
 
-.rc-footer { text-align: center; margin-top: 8px; }
-.rc-note { font-size: 10px; color: #6b7280; }
+.rc-footer { text-align: center; margin-top: 10px; }
+.rc-note { font-size: 12px; color: #000; }
 
 .no-print { display: block; text-align: center; margin: 12px 0 24px; }
 .rc-btn { appearance: none; border: 1px solid #cbd5e1; background: white; color: #111827; padding: 8px 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.06); cursor: pointer; font-size: 12px; }
@@ -44,7 +49,22 @@ html, body {
 
 @media print {
   html, body { background: white; }
-  .receipt { margin: 0; box-shadow: none; }
+  /* Use common printable width and anchor to left */
+  .receipt {
+    width: 72mm;
+    margin: 0;
+    box-shadow: none;
+    padding-top: 1mm; /* reduce header space */
+    padding-right: 4mm; /* protect right edge */
+    padding-left: 1mm;  /* minimal left */
+  }
+  .receipt::after { content: ''; display: block; height: 6mm; }
+  .rc-header { margin-top: 0; }
+  .rc-rule { margin: 6px 0; }
   .no-print { display: none !important; }
+  /* Avoid splitting lines/sections */
+  header, section, footer, .rc-row { break-inside: avoid; page-break-inside: avoid; }
 }
+
+@media screen { #mp-container { display: none; } }
 

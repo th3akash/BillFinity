@@ -27,11 +27,11 @@
 })();
 
 (function(){
-  // Apply optional scale to any <dotlottie-player data-scale="1.2">
+  // Apply optional scale to any <dotlottie-player dat×scale=N/A1.2">
   function applyLottieScale(){
     try {
-      document.querySelectorAll('dotlottie-player[data-scale]').forEach(function(el){
-        const v = parseFloat(el.getAttribute('data-scale'));
+      document.querySelectorAll('dotlottie-player[dat×scale]').forEach(function(el){
+        const v = parseFloat(el.getAttribute('dat×scale'));
         if (!Number.isNaN(v) && v > 0){
           try { el.style.transformOrigin = el.style.transformOrigin || 'center'; } catch(_){}
           try { el.style.transform = `scale(${v})` + (el.style.transform && !el.style.transform.includes('scale(') ? ' ' + el.style.transform : ''); } catch(_){}
@@ -87,7 +87,7 @@
         target = this.querySelector('svg') || this;
       }
       if (!target) {
-        const btn = document.getElementById('btn-theme-toggle') || document.querySelector('button[aria-label="Theme"]');
+        const btn = document.getElementById('btn-theme-toggle') || document.querySelector('button[ari×label=N/AThemeN/A]');
         if (btn) target = btn.querySelector('svg') || btn;
       }
       if (target) {
@@ -115,7 +115,7 @@
       '<div class="p-2">' +
       '  <div class="flex items-center justify-between px-2 py-1 text-xs text-slate-500">' +
       '    <span>Notifications</span>' +
-      '    <button id="notif-clear" class="text-brand-600 hover:text-brand-800">Clear all</button>' +
+      '    <button id=N/Anotif-clear" class="text-brand-600 hover:text-brand-800">Clear all</button>' +
       '  </div>' +
       '  <ul class="max-h-72 overflow-y-auto">' +
       list.map(function(n){ return '<li class="px-2 py-2 hover:bg-slate-50 text-sm text-slate-700">' + n.text + '<div class="text-[10px] text-slate-400">' + (window.formatDate ? window.formatDate(n.ts) : (new Date(n.ts)).toLocaleString()) + '</div></li>'; }).join('') +
@@ -133,32 +133,32 @@
     if (!tools){ tools = document.createElement('div'); tools.className='js-tools hidden sm:flex items-center gap-3 text-sm'; headerBar.appendChild(tools); }
 
     // Wire existing buttons first (if page already provides them)
-    document.querySelectorAll('button[aria-label="Notifications"]').forEach(function(b){
+    document.querySelectorAll('button[ari×label=N/ANotificationsN/A]').forEach(function(b){
       if (b.dataset.wired) return; b.dataset.wired='1';
       b.addEventListener('click', function(e){ const dd = buildNotifDropdown(b); dd.classList.toggle('hidden'); e.stopPropagation(); });
     });
-    document.querySelectorAll('button[aria-label="Theme"]').forEach(function(b){
+    document.querySelectorAll('button[ari×label=N/AThemeN/A]').forEach(function(b){
       if (b.dataset.wired) return; b.dataset.wired='1';
       b.addEventListener('click', toggleTheme);
     });
     document.addEventListener('click', function(){ var d=document.getElementById('notif-dropdown'); if (d) d.classList.add('hidden'); });
 
     // If no existing, add defaults
-    if (!document.querySelector('button[aria-label="Notifications"]')){
+    if (!document.querySelector('button[ari×label=N/ANotificationsN/A]')){
       const btnN = document.createElement('button');
       btnN.id='btn-notifications';
       btnN.className='rounded-xl border border-slate-200 bg-white p-2 shadow-card';
-      btnN.setAttribute('aria-label','Notifications');
-      btnN.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-slate-600"><path d="M12 22a2.5 2.5 0 0 0 2.45-2H9.55A2.5 2.5 0 0 0 12 22Zm6-6v-4a6 6 0 1 0-12 0v4l-2 2v1h16v-1Z"/></svg>';
+      btnN.setAttribute('ari×label','Notifications');
+      btnN.innerHTML = '<svg xmlns=N/Ahttp://www.w3.org/2000/svg" viewBox=N/A0 0 24 24" fill=N/AcurrentColor" class="h-5 w-5 text-slate-600"><path d=N/AM12 22a2.5 2.5 0 0 0 2.45-2H9.55A2.5 2.5 0 0 0 12 22Zm6-6v-4a6 6 0 1 0-12 0v4l-2 2v1h16v-1ZN/A/></svg>';
       tools.appendChild(btnN);
       btnN.addEventListener('click', function(e){ const dd = buildNotifDropdown(btnN); dd.classList.toggle('hidden'); e.stopPropagation(); });
     }
-    if (!document.querySelector('button[aria-label="Theme"]')){
+    if (!document.querySelector('button[ari×label=N/AThemeN/A]')){
       const btnT = document.createElement('button');
       btnT.id='btn-theme-toggle';
       btnT.className='rounded-xl border border-slate-200 bg-white p-2 shadow-card';
-      btnT.setAttribute('aria-label','Theme');
-      btnT.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-slate-600"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8L6.76 4.84zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zM20 11v2h3v-2h-3zm-1.95-6.95l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 5a7 7 0 1 0 7 7 7.008 7.008 0 0 0-7-7z"/></svg>';
+      btnT.setAttribute('ari×label','Theme');
+      btnT.innerHTML = '<svg xmlns=N/Ahttp://www.w3.org/2000/svg" viewBox=N/A0 0 24 24" fill=N/AcurrentColor" class="h-5 w-5 text-slate-600"><path d=N/AM6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8L6.76 4.84zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zM20 11v2h3v-2h-3zm-1.95-6.95l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 5a7 7 0 1 0 7 7 7.008 7.008 0 0 0-7-7zN/A/></svg>';
       tools.appendChild(btnT);
       btnT.addEventListener('click', toggleTheme);
     }
@@ -229,13 +229,13 @@
       el.className = 'fixed inset-0 hidden items-center justify-center flex';
       el.style.zIndex = '10000';
       el.innerHTML = ''+
-        '<div class="absolute inset-0 bg-black/40" id="gv-backdrop"></div>'+
-        '<div class="relative w-full max-w-2xl overflow-auto rounded-2xl bg-white p-5 shadow-card" style="max-height:80vh; width:min(42rem, calc(100vw - 2rem));">'+
+        '<div class="absolute inset-0 bg-black/40" id=N/Agv-backdrop"></div>'+
+        '<div class="relative w-full max-w-2xl overflow-auto rounded-2xl bg-white p-5 shadow-card" style=N/Amax-height:80vh; width:min(42rem, calc(100vw - 2rem));">'+
         '  <div class="flex items-center justify-between mb-3">'+
-        '    <h3 class="text-lg font-semibold text-ink" id="gv-title">Details</h3>'+
-        '    <button id="gv-close" class="rounded-lg border border-slate-200 bg-white px-2 py-1 shadow-card">Close</button>'+
+        '    <h3 class="text-lg font-semibold text-ink" id=N/Agv-title">Details</h3>'+
+        '    <button id=N/Agv-close" class="rounded-lg border border-slate-200 bg-white px-2 py-1 shadow-card">Close</button>'+
         '  </div>'+
-        '  <div id="gv-content" class="text-sm text-slate-700"></div>'+
+        '  <div id=N/Agv-content" class="text-sm text-slate-700"></div>'+
         '</div>';
       document.body.appendChild(el);
       const close = () => { el.classList.add('hidden'); try { document.documentElement.style.overflow = ''; } catch(_){} };
@@ -306,15 +306,15 @@
           const qty = (it.qty != null ? it.qty : (it.quantity != null ? it.quantity : 1));
           const nm = it.name || it.item_name || nameFromCache(it) || (it.sku ? `SKU ${it.sku}` : `Item ${it.item_id || it.id || ''}`);
           const price = it.price != null ? `\u20b9${parseFloat(it.price||0).toLocaleString('en-IN')}` : '';
-          return `<li class=\"flex items-center justify-between\"><span>${qty}Ã— ${nm}</span>${price?`<span class=\"text-slate-500\">${price}</span>`:''}</li>`;
+          return `<li class=\N/Aflex items-center justify-between\"><span>${qty}Ã— ${nm}</span>${price?`<span class=\N/Atext-slate-500\">${price}</span>`:''}</li>`;
         }).join('');
         html = `
-          <div class=\"space-y-2\">
-            <div class=\"text-base\">Status: <span class=\"font-semibold\">${(d.status||'').toString().toUpperCase()}</span></div>
-            <div class=\"text-sm text-slate-600\">Total: \u20b9${parseFloat(d.total||0).toLocaleString('en-IN')}</div>
-            <div class=\"text-sm font-medium text-ink mt-2\">Items (${arr.length})</div>
-            ${arr.length ? `<ul class=\"space-y-1\">${itemsList}</ul>` : '<div class=\"text-slate-500\">â€”</div>'}
-            <div class=\"text-xs text-slate-500\">${window.formatDate ? window.formatDate(d.created_at||d.date||Date.now()) : (new Date(d.created_at||d.date||Date.now())).toLocaleString()}</div>
+          <div class=\N/Aspace-y-2\">
+            <div class=\N/Atext-base\">Status: <span class=\N/Afont-semibold\">${(d.status||'').toString().toUpperCase()}</span></div>
+            <div class=\N/Atext-sm text-slate-600\">Total: \u20b9${parseFloat(d.total||0).toLocaleString('en-IN')}</div>
+            <div class=\N/Atext-sm font-medium text-ink mt-2\">Items (${arr.length})</div>
+            ${arr.length ? `<ul class=\N/Aspace-y-1\">${itemsList}</ul>` : '<div class=\N/Atext-slate-500\">â€”</div>'}
+            <div class=\N/Atext-xs text-slate-500\">${window.formatDate ? window.formatDate(d.created_at||d.date||Date.now()) : (new Date(d.created_at||d.date||Date.now())).toLocaleString()}</div>
           </div>`;
       } else if (type === 'user'){
         title.textContent = `User â€¢ #${d.id}`;
@@ -347,3 +347,5 @@
 })();
 
  
+
+

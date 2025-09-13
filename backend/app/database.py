@@ -33,6 +33,10 @@ def init_db():
         with engine.begin() as conn:
             # Add gst_rate to items if missing (PostgreSQL IF NOT EXISTS supported)
             conn.execute(text("ALTER TABLE items ADD COLUMN IF NOT EXISTS gst_rate INTEGER NOT NULL DEFAULT 18"))
+            # Add store phone and gstin to settings if missing
+            conn.execute(text("ALTER TABLE settings ADD COLUMN IF NOT EXISTS phone VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE settings ADD COLUMN IF NOT EXISTS email VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE settings ADD COLUMN IF NOT EXISTS gstin VARCHAR(64)"))
     except Exception:
         # Don't block startup if DDL fails; app can still run for fresh DBs
         pass

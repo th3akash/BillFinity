@@ -1,4 +1,4 @@
-﻿const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'http://127.0.0.1:8000';
 const ordersTbody = document.getElementById('orders-tbody');
 
 function orderBadge(status) {
@@ -19,7 +19,7 @@ function renderOrders(orders) {
   const rows = orders.map(o => {
     const customerAvatar = (o.customer && o.customer.avatar) || `https://i.pravatar.cc/80?img=1`;
     const customerName = (o.customer && (o.customer.name || o.customer.full_name)) || (o.customer && o.customer.email) || '';
-    const itemsDesc = Array.isArray(o.items) ? o.items.map(it => `${it.quantity || 1}× ${it.name || it.title || ''}`).join(', ') : (o.items || '');
+    const itemsDesc = Array.isArray(o.items) ? o.items.map(it => `${it.quantity || 1}� ${it.name || it.title || ''}`).join(', ') : (o.items || '');
     const total = o.total != null ? '\u20b9' + o.total : '';
     const date = (window.formatDate ? window.formatDate(o.date || o.created_at || '') : (o.date || o.created_at || ''));
 
@@ -43,7 +43,7 @@ function renderOrders(orders) {
 }
 
 async function fetchOrders() {
-  ordersTbody.innerHTML = '<tr class="bg-white"><td class="px-4 py-4 text-center text-slate-500" colspan="6">Loading…</td></tr>';
+  ordersTbody.innerHTML = '<tr class="bg-white"><td class="px-4 py-4 text-center text-slate-500" colspan="6">Loading�</td></tr>';
   try {
     const token = localStorage.IF_TOKEN;
     const res = await fetch(baseUrl + '/orders', { headers: { 'Authorization': token } });
@@ -74,12 +74,25 @@ function showToast(message, type = 'success', timeout = 4000) {
 // Wire header buttons and modal
 const btnExport = document.getElementById('btn-export-orders');
 const btnCreateOrder = document.getElementById('btn-create-order');
+// Step 1 (customer)
+const custModal = document.getElementById('order-customer-modal');
+const custBackdrop = document.getElementById('order-customer-backdrop');
+const custNameInput = document.getElementById('new-cust-name');
+const custPhoneInput = document.getElementById('new-cust-phone');
+const custErr = document.getElementById('order-customer-error');
+const custCancelBtn = document.getElementById('order-cust-cancel');
+const custNextBtn = document.getElementById('order-cust-next');
+const custSkipBtn = document.getElementById('order-cust-skip');
+// Step 2 (order)
 const orderModal = document.getElementById('order-modal');
 const orderBackdrop = document.getElementById('order-modal-backdrop');
 const orderForm = document.getElementById('order-form');
 const orderCancel = document.getElementById('order-cancel-btn');
-const orderSubmit = document.getElementById('order-submit-btn');
+const orderSubmitPrint = document.getElementById('order-submit-print-btn');
+const orderBack = document.getElementById('order-back-btn');
 const orderError = document.getElementById('order-form-error');
+const orderCustomerHidden = document.getElementById('order-customer');
+const orderCustomerSummary = document.getElementById('order-customer-summary');
 
 if (btnExport) btnExport.addEventListener('click', async () => {
   try {
@@ -101,30 +114,121 @@ if (btnExport) btnExport.addEventListener('click', async () => {
   }
 });
 
-if (btnCreateOrder) btnCreateOrder.addEventListener('click', () => { if (!orderModal) return; orderModal.classList.remove('hidden'); orderModal.classList.add('flex'); });
+function digits(s){ return String(s||'').replace(/\D+/g,''); }
+
+// Open Step 1 when creating an order
+if (btnCreateOrder) btnCreateOrder.addEventListener('click', () => {
+  if (!custModal) return;
+  custErr && (custErr.textContent = '');
+  custErr && custErr.classList.add('hidden');
+  custNameInput && (custNameInput.value = '');
+  custPhoneInput && (custPhoneInput.value = '');
+  custModal.classList.remove('hidden');
+  custModal.classList.add('flex');
+});
+if (custBackdrop) custBackdrop.addEventListener('click', () => { custModal.classList.add('hidden'); custModal.classList.remove('flex'); });
+if (custCancelBtn) custCancelBtn.addEventListener('click', () => { custModal.classList.add('hidden'); custModal.classList.remove('flex'); });
+
+async function proceedToItems(){
+  const name = (custNameInput?.value||'').trim();
+  const phone = digits(custPhoneInput?.value||'');
+  if (!name || phone.length < 8){ if (custErr){ custErr.textContent = 'Please provide name and a valid WhatsApp number'; custErr.classList.remove('hidden'); } return; }
+  try {
+    const token = localStorage.IF_TOKEN;
+    // Try find by phone in cache, else fetch
+    let cid=null; let meta=null;
+    try {
+      const res = await fetch(baseUrl + '/customers', { headers: { 'Authorization': token } });
+      if (res.ok){
+        const arr = await res.json();
+        window._customersCache = Array.isArray(arr) ? arr : [];
+        const found = (Array.isArray(arr)?arr:[]).find(c => digits(c.phone) === phone);
+        if (found){ cid = found.id; meta = { id: found.id, name: found.name, phone: found.phone, gstin: found.gstin }; }
+      }
+    } catch(_){}
+    if (!cid){
+      const payload = { name, phone };
+      const resC = await fetch(baseUrl + '/customers', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token }, body: JSON.stringify(payload) });
+      if (!resC.ok) throw new Error(await resC.text());
+      const created = await resC.json();
+      cid = created.id; meta = { id: created.id, name: created.name, phone: created.phone, gstin: created.gstin };
+      try { window._customersCache = Array.isArray(window._customersCache) ? [created, ...window._customersCache] : [created]; } catch(_){}
+    }
+    if (orderCustomerHidden) orderCustomerHidden.value = String(cid);
+    if (orderCustomerSummary) orderCustomerSummary.textContent = `${meta.name}  -  ${meta.phone}`;
+    custModal.classList.add('hidden'); custModal.classList.remove('flex');
+    orderModal.classList.remove('hidden'); orderModal.classList.add('flex');
+    // Prep items
+    fetchPickerItems(); window._orderItems = []; syncOrderItemsInput(); renderPickerList();
+  } catch (e){ if (custErr){ custErr.textContent = String(e); custErr.classList.remove('hidden'); } }
+}
+if (custNextBtn) custNextBtn.addEventListener('click', proceedToItems);
+
+async function skipToItems(){
+  try {
+    const token = localStorage.IF_TOKEN;
+    let cid = null; let meta = { name: 'N/A', phone: 'N/A', gstin: null };
+    try {
+      const res = await fetch(baseUrl + '/customers', { headers: { 'Authorization': token } });
+      if (res.ok){
+        const arr = await res.json();
+        window._customersCache = Array.isArray(arr) ? arr : [];
+        const found = (Array.isArray(arr)?arr:[]).find(c => (String(c.name||'').trim().toUpperCase()==='N/A'));
+        if (found){ cid = found.id; meta = { name: found.name || 'N/A', phone: found.phone || 'N/A', gstin: found.gstin || null }; }
+      }
+    } catch(_){}
+    if (!cid){
+      const payload = { name: 'N/A' };
+      const resC = await fetch(baseUrl + '/customers', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token }, body: JSON.stringify(payload) });
+      if (!resC.ok) throw new Error(await resC.text());
+      const created = await resC.json();
+      cid = created.id; meta = { name: created.name || 'N/A', phone: created.phone || 'N/A', gstin: created.gstin || null };
+      try { window._customersCache = Array.isArray(window._customersCache) ? [created, ...window._customersCache] : [created]; } catch(_){}
+    }
+    if (orderCustomerHidden) orderCustomerHidden.value = String(cid);
+    if (orderCustomerSummary) orderCustomerSummary.textContent = `${meta.name}  -  ${meta.phone || 'N/A'}`;
+    custModal.classList.add('hidden'); custModal.classList.remove('flex');
+    orderModal.classList.remove('hidden'); orderModal.classList.add('flex');
+    fetchPickerItems(); window._orderItems = []; syncOrderItemsInput(); renderPickerList();
+  } catch (e) {
+    if (custErr){ custErr.textContent = String(e); custErr.classList.remove('hidden'); }
+  }
+}
+if (custSkipBtn) custSkipBtn.addEventListener('click', skipToItems);
+
 if (orderBackdrop) orderBackdrop.addEventListener('click', () => { orderModal.classList.add('hidden'); orderModal.classList.remove('flex'); });
 if (orderCancel) orderCancel.addEventListener('click', () => { orderModal.classList.add('hidden'); orderModal.classList.remove('flex'); });
+if (orderBack) orderBack.addEventListener('click', () => { orderModal.classList.add('hidden'); orderModal.classList.remove('flex'); if (custModal){ custModal.classList.remove('hidden'); custModal.classList.add('flex'); } });
 
-orderForm && orderForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
+async function createOrderAndMaybePrint(doPrint){
   orderError && orderError.classList.add('hidden');
   const customer = document.getElementById('order-customer').value;
   let items;
   try { items = JSON.parse(document.getElementById('order-items').value); } catch (e) { orderError && (orderError.textContent = 'Items must be valid JSON'); orderError && orderError.classList.remove('hidden'); return; }
   try {
-    orderSubmit.disabled = true; orderSubmit.textContent = 'Creating…';
+    if (orderSubmitPrint) { orderSubmitPrint.disabled = true; orderSubmitPrint.textContent = 'Creating�'; }
     const token = localStorage.IF_TOKEN;
-    const res = await fetch(baseUrl + '/orders', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token }, body: JSON.stringify({ customer_id: customer, items }) });
+    // Convert picker items into API payload
+    const itemsPayload = Array.isArray(items) ? items.map(it => ({ item_id: Number(it.item_id), qty: Number(it.quantity || 1) })) : [];
+    const res = await fetch(baseUrl + '/orders', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token }, body: JSON.stringify({ customer_id: Number(customer), items: itemsPayload }) });
     if (!res.ok) throw new Error(await res.text());
+    const order = await res.json();
+    try { sessionStorage.setItem('IF_LAST_ORDER', JSON.stringify(order)); } catch(_){}
+    if (doPrint){
+      try { sessionStorage.setItem('IF_RECEIPT_ORDER', JSON.stringify(order)); } catch(_){}
+      window.location.href = 'receipt.html?auto=1&seq=1&close=1&id=' + encodeURIComponent(order.id || order.order_id || '');
+      return;
+    }
     showToast('Order created', 'success');
     orderModal.classList.add('hidden'); orderModal.classList.remove('flex');
     await fetchOrders();
   } catch (err) { orderError && (orderError.textContent = String(err)); orderError && orderError.classList.remove('hidden'); showToast('Create failed: ' + String(err), 'error'); }
-  finally { orderSubmit.disabled = false; orderSubmit.textContent = 'Create'; }
-});
+  finally { if (orderSubmitPrint) { orderSubmitPrint.disabled = false; orderSubmitPrint.textContent = 'Create & Print'; } }
+}
+if (orderSubmitPrint) orderSubmitPrint.addEventListener('click', async (e) => { e.preventDefault(); createOrderAndMaybePrint(true); });
 
-// Open modal if hash #new
-function handleHash() { const h = window.location.hash.slice(1); if (h === 'new' && orderModal) { orderModal.classList.remove('hidden'); orderModal.classList.add('flex'); } }
+// Open modal if hash #new (start at step 1)
+function handleHash() { const h = window.location.hash.slice(1); if (h === 'new' && custModal) { custModal.classList.remove('hidden'); custModal.classList.add('flex'); } }
 window.addEventListener('hashchange', handleHash); handleHash();
 
 // --- Product picker wiring for Create Order modal ---
@@ -143,7 +247,7 @@ async function fetchPickerItems() {
     const res = await fetch(baseUrl + '/items', { headers: { 'Authorization': token } });
     if (!res.ok) throw new Error(await res.text());
     const items = await res.json();
-    pickerItem.innerHTML = items.map(it => `<option value="${it.id}" data-name="${(it.name||'').replace(/"/g,'&quot;')}">${it.name} (${it.sku || ''}) - ₹${it.price || 0}</option>`).join('');
+    pickerItem.innerHTML = items.map(it => { const sku = it.sku || '' ; const stock = (it.in_stock != null ? it.in_stock : it.stock); const stockPart = (stock != null) ? `, ${stock} in stock` : '' ; const price = it.price || 0; return `<option value="${it.id}" data-name="${(it.name||'').replace(/\"/g,'&quot;')}">${it.name} (${sku}${stockPart}) - \u20b9${Number(price).toLocaleString('en-IN')}</option>`; }).join('');
   } catch (e) {
     // silent failure: leave picker empty
   }
@@ -161,7 +265,7 @@ function renderPickerList() {
     const li = document.createElement('div');
     li.className = 'flex items-center gap-2 py-1';
     li.dataset.index = idx;
-    li.innerHTML = `<div class="flex-1 text-sm">${it.name} <span class="text-xs text-slate-500">× ${it.quantity}</span></div><button type="button" class="text-rose-600 text-sm remove-picker-item">Remove</button>`;
+    li.innerHTML = `<div class="flex-1 text-sm">${it.name} <span class="text-xs text-slate-500">� ${it.quantity}</span></div><button type="button" class="text-rose-600 text-sm remove-picker-item">Remove</button>`;
     pickerList.appendChild(li);
   });
 }
@@ -194,7 +298,7 @@ if (pickerList) pickerList.addEventListener('click', (ev) => {
 });
 
 // populate picker when modal opens
-if (btnCreateOrder) btnCreateOrder.addEventListener('click', () => { fetchPickerItems(); window._orderItems = []; syncOrderItemsInput(); renderPickerList(); });
+// Prepare picker list when moving to order modal handled above
 
 // --- Filtering & Pagination ---
 const filterFrom = document.getElementById('filter-from');
@@ -283,3 +387,5 @@ tailwind.config = {
     },
   },
 };
+
+

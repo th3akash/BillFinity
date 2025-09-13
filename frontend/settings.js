@@ -54,15 +54,7 @@ tailwind.config = {
       orders_group_default: !!el('orders-group-default')?.checked,
       date_format: el('date-format')?.value || null,
       time_format: el('time-format')?.value || null,
-      // Receipt settings (local only)
-      rc_title: el('rc-title')?.value.trim() || null,
-      rc_subtitle: el('rc-subtitle')?.value.trim() || null,
-      rc_address: el('rc-address')?.value.trim() || null,
-      rc_phone: el('rc-phone')?.value.trim() || null,
-      rc_gstin: el('rc-gstin')?.value.trim() || null,
-      rc_footer1: el('rc-footer1')?.value.trim() || null,
-      rc_footer2: el('rc-footer2')?.value.trim() || null,
-      rc_show_tax: !!el('rc-show-tax')?.checked,
+      // Printer settings (local only)
       rc_copies: Number(el('rc-copies')?.value || '') || null,
       rc_paper: el('rc-paper')?.value || null,
     };
@@ -89,6 +81,9 @@ tailwind.config = {
       const s = await res.json();
       el('company-name') && (el('company-name').value = s.company_name || '');
       el('address') && (el('address').value = s.address || '');
+      if (el('phone')) el('phone').value = s.phone || '';
+      if (el('email')) el('email').value = s.email || '';
+      if (el('store-gstin')) el('store-gstin').value = s.gstin || '';
       if (el('currency')) { el('currency').value = s.currency || 'INR'; }
       if (el('notif-email')) el('notif-email').checked = !!s.email_updates;
       if (el('notif-sms')) el('notif-sms').checked = !!s.sms_alerts;
@@ -100,17 +95,9 @@ tailwind.config = {
       if (el('orders-group-default')) el('orders-group-default').checked = !!prefs.orders_group_default;
       if (el('date-format')) el('date-format').value = prefs.date_format || 'dd MMM yyyy';
       if (el('time-format')) el('time-format').value = prefs.time_format || '12';
-      // Load receipt settings from localStorage
+      // Load printer settings from localStorage
       let rcs = {};
       try { rcs = JSON.parse(localStorage.getItem('IF_RECEIPT_SETTINGS') || '{}'); } catch(_) {}
-      if (el('rc-title')) el('rc-title').value = rcs.title || '';
-      if (el('rc-subtitle')) el('rc-subtitle').value = rcs.subtitle || '';
-      if (el('rc-address')) el('rc-address').value = rcs.address || '';
-      if (el('rc-phone')) el('rc-phone').value = rcs.phone || '';
-      if (el('rc-gstin')) el('rc-gstin').value = rcs.gstin || '';
-      if (el('rc-footer1')) el('rc-footer1').value = rcs.footer1 || 'Thank you for your purchase!';
-      if (el('rc-footer2')) el('rc-footer2').value = rcs.footer2 || 'Powered by InvoiceFlow';
-      if (el('rc-show-tax')) el('rc-show-tax').checked = !!rcs.show_tax;
       if (el('rc-copies')) el('rc-copies').value = String(rcs.copies || 2);
       if (el('rc-paper')) el('rc-paper').value = rcs.paper || '80';
       initial = currentValues();
@@ -127,6 +114,9 @@ tailwind.config = {
       const serverPayload = {
         company_name: payload.company_name,
         address: payload.address,
+        phone: payload.phone,
+        email: payload.email,
+        gstin: payload.gstin,
         currency: payload.currency || 'INR',
         email_updates: !!payload.email_updates,
         sms_alerts: !!payload.sms_alerts,
@@ -138,6 +128,9 @@ tailwind.config = {
       initial = {
         company_name: s.company_name || null,
         address: s.address || null,
+        phone: s.phone || null,
+        email: s.email || null,
+        gstin: s.gstin || null,
         currency: s.currency || 'INR',
         email_updates: !!s.email_updates,
         sms_alerts: !!s.sms_alerts,
@@ -146,14 +139,6 @@ tailwind.config = {
         orders_group_default: !!el('orders-group-default')?.checked,
         date_format: el('date-format')?.value || null,
         time_format: el('time-format')?.value || null,
-        rc_title: payload.rc_title || null,
-        rc_subtitle: payload.rc_subtitle || null,
-        rc_address: payload.rc_address || null,
-        rc_phone: payload.rc_phone || null,
-        rc_gstin: payload.rc_gstin || null,
-        rc_footer1: payload.rc_footer1 || null,
-        rc_footer2: payload.rc_footer2 || null,
-        rc_show_tax: !!payload.rc_show_tax,
         rc_copies: payload.rc_copies || null,
         rc_paper: payload.rc_paper || null,
       };
@@ -164,16 +149,8 @@ tailwind.config = {
         time_format: initial.time_format || '12',
       };
       localStorage.setItem('IF_PREFS', JSON.stringify(prefsToSave));
-      // Save receipt settings locally
+      // Save printer settings locally
       const receiptToSave = {
-        title: payload.rc_title || '',
-        subtitle: payload.rc_subtitle || '',
-        address: payload.rc_address || '',
-        phone: payload.rc_phone || '',
-        gstin: payload.rc_gstin || '',
-        footer1: payload.rc_footer1 || 'Thank you for your purchase!',
-        footer2: payload.rc_footer2 || 'Powered by InvoiceFlow',
-        show_tax: !!payload.rc_show_tax,
         copies: Math.min(Math.max(payload.rc_copies || 2, 1), 5),
         paper: (payload.rc_paper === '58' ? '58' : '80'),
       };
@@ -190,6 +167,9 @@ tailwind.config = {
     if (!initial) return;
     el('company-name') && (el('company-name').value = initial.company_name || '');
     el('address') && (el('address').value = initial.address || '');
+    if (el('phone')) el('phone').value = initial.phone || '';
+    if (el('email')) el('email').value = initial.email || '';
+    if (el('store-gstin')) el('store-gstin').value = initial.gstin || '';
     if (el('currency')) el('currency').value = initial.currency || 'INR';
     if (el('notif-email')) el('notif-email').checked = !!initial.email_updates;
     if (el('notif-sms')) el('notif-sms').checked = !!initial.sms_alerts;
@@ -198,21 +178,13 @@ tailwind.config = {
     if (el('orders-group-default')) el('orders-group-default').checked = !!initial.orders_group_default;
     if (el('date-format')) el('date-format').value = initial.date_format || 'dd MMM yyyy';
     if (el('time-format')) el('time-format').value = initial.time_format || '12';
-    if (el('rc-title')) el('rc-title').value = initial.rc_title || '';
-    if (el('rc-subtitle')) el('rc-subtitle').value = initial.rc_subtitle || '';
-    if (el('rc-address')) el('rc-address').value = initial.rc_address || '';
-    if (el('rc-phone')) el('rc-phone').value = initial.rc_phone || '';
-    if (el('rc-gstin')) el('rc-gstin').value = initial.rc_gstin || '';
-    if (el('rc-footer1')) el('rc-footer1').value = initial.rc_footer1 || 'Thank you for your purchase!';
-    if (el('rc-footer2')) el('rc-footer2').value = initial.rc_footer2 || 'Powered by InvoiceFlow';
-    if (el('rc-show-tax')) el('rc-show-tax').checked = !!initial.rc_show_tax;
     if (el('rc-copies')) el('rc-copies').value = String(initial.rc_copies || 2);
     if (el('rc-paper')) el('rc-paper').value = initial.rc_paper || '80';
     updateDirtyBar();
   }
 
   function wireInputs() {
-    ['company-name','address','currency','notif-email','notif-sms','notif-lowstock','orders-page-size','orders-group-default','date-format','time-format','rc-title','rc-subtitle','rc-address','rc-phone','rc-gstin','rc-footer1','rc-footer2','rc-show-tax','rc-copies','rc-paper'].forEach(id => {
+    ['company-name','address','phone','email','store-gstin','currency','notif-email','notif-sms','notif-lowstock','orders-page-size','orders-group-default','date-format','time-format','rc-copies','rc-paper'].forEach(id => {
       const e = el(id); if (!e) return;
       e.addEventListener('input', updateDirtyBar);
       e.addEventListener('change', updateDirtyBar);

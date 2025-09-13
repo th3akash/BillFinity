@@ -123,6 +123,9 @@ class OrderOut(BaseModel):
 class SettingsUpdate(BaseModel):
     company_name: Optional[str] = None
     address: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    gstin: Optional[str] = None
     currency: Optional[str] = None
     email_updates: Optional[bool] = None
     sms_alerts: Optional[bool] = None

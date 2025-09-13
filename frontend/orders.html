@@ -1,198 +1,194 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>InvoiceFlow • Orders</title>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>BillFinity - Orders</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;600;700;800;900" />
+      <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+      <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;600;700;800;900" />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script defer src="sidebar.js"></script>
-    <script defer src="ui-common.js"></script>
-    <script defer src="orders.js"></script>
-    <link rel="stylesheet" href="common.css" />
-    <link rel="stylesheet" href="orders.css" />
-  </head>
-  <body class="bg-slate-100">
-    <div class="min-h-screen flex">
-      <aside class="app-aside hidden lg:flex lg:fixed top-0 left-0 h-screen w-72 overflow-y-auto shrink-0 flex-col bg-white/90 backdrop-blur border-r border-slate-200 px-4 py-5">
-        <a href="index.html" class="flex items-center gap-3 px-2">
-          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white shadow-card">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 15-4-4 1.414-1.414L13 13.172l4.586-4.586L19 10Z"/></svg>
-          </span>
-          <div class="leading-tight">
-            <p class="text-sm text-slate-500">Manjeet Furnitures</p>
-            <h1 class="text-xl font-extrabold tracking-tight text-ink">InvoiceFlow</h1>
-          </div>
-        </a>
-        <nav class="mt-8 space-y-1 text-sm">
-          <a href="index.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z"/></svg></span>
-            Dashboard
+      <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+      <script defer src="sidebar.js"></script>
+      <script defer src="ui-common.js"></script>
+      <script defer src="orders.js"></script>
+      <link rel="stylesheet" href="common.css" />
+      <link rel="stylesheet" href="orders.css" />
+    </head>
+    <body class="bg-slate-100">
+      <div class="min-h-screen flex">
+        <aside class="app-aside hidden lg:flex lg:fixed top-0 left-0 h-screen w-72 overflow-y-auto shrink-0 flex-col bg-white/90 backdrop-blur border-r border-slate-200 px-4 py-5">
+          <a href="index.html" class="flex items-center gap-3 px-2">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white shadow-card">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 15-4-4 1.414-1.414L13 13.172l4.586-4.586L19 10Z"/></svg>
+            </span>
+            <div class="leading-tight">
+              <p class="text-sm text-slate-500">Manjeet Furnitures</p>
+              <h1 class="text-xl font-extrabold tracking-tight text-ink">BillFinity</h1>
+            </div>
           </a>
-          <a href="orders.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 bg-slate-100 text-ink font-medium">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand-600 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 7H3V5h18v2Zm0 4H3v8h18v-8ZM5 13h6v4H5v-4Zm8 0h6v4h-6v-4Z"/></svg></span>
-            Billing / Orders
-          </a>
-          <a href="customers.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M7 11a4 4 0 1 1 4-4 4.005 4.005 0 0 1-4 4Zm10 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-10 2a6 6 0 0 0-6 6h8v-2a6 6 0 0 1 3-5.196A7.942 7.942 0 0 0 7 13Zm8 1a4 4 0 0 0-4 4v1h8a4 4 0 0 0-4-5Z"/></svg></span>
-            Customers
-          </a>
-          <a href="items.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 8.002 12 3 3 8.002V21h8v-6h2v6h8zM5 10.154l7-3.888 7 3.888V19h-4v-6H9v6H5z"/></svg></span>
-            Inventory Management
-          </a>
-          <a href="reports.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 3h18v2H3zm0 4h18v10H3zm0 12h18v2H3zm2-10v6h14v-6z"/></svg></span>
-            Reports & Analytics
-          </a>
-          <a href="user-management.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a7 7 0 0 1 14 0H3Zm18-3h-2v-2h2v2Zm0-4h-2V6h2z"/></svg></span>
-            User Management
-          </a>
-          <a href="connectors.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M8 8h3a1 1 0 1 1 0 2H8a3 3 0 1 0 0 6h3a1 1 0 1 1 0 2H8a5 5 0 1 1 0-10Zm5 0h3a5 5 0 1 1 0 10h-3a1 1 0 1 1 0-2h3a3 3 0 1 0 0-6h-3a1 1 0 1 1 0-2Z"/></svg></span>
-            Connectors
-          </a>
-          <a href="settings.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="m19.14 12.936.843-1.459-1.3-2.251-1.673.189a5.968 5.968 0 0 0-1.22-.706l-.546-1.6h-2.6l-.546 1.6a5.968 5.968 0 0 0-1.22.706l-1.673-.189-1.3 2.251.843 1.459a6.18 6.18 0 0 0 0 1.129l-.843 1.459 1.3 2.251 1.673-.189c.38.287.78.52 1.22.706l.546 1.6h2.6l.546-1.6c.44-.186.84-.419 1.22-.706l1.673.189 1.3-2.251-.843-1.459c.03-.373.03-.756 0-1.129ZM12 14.5A2.5 2.5 0 1 1 14.5 12 2.503 2.503 0 0 1 12 14.5Z"/></svg></span>
-            Settings
-          </a>
-        </nav>
-      </aside>
+          <nav class="mt-8 space-y-1 text-sm">
+            <a href="index.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z"/></svg></span>
+              Dashboard
+            </a>
+            <a href="orders.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 bg-slate-100 text-ink font-medium">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand-600 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 7H3V5h18v2Zm0 4H3v8h18v-8ZM5 13h6v4H5v-4Zm8 0h6v4h-6v-4Z"/></svg></span>
+              Billing / Orders
+            </a>
+            <a href="customers.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M7 11a4 4 0 1 1 4-4 4.005 4.005 0 0 1-4 4Zm10 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-10 2a6 6 0 0 0-6 6h8v-2a6 6 0 0 1 3-5.196A7.942 7.942 0 0 0 7 13Zm8 1a4 4 0 0 0-4 4v1h8a4 4 0 0 0-4-5Z"/></svg></span>
+              Customers
+            </a>
+            <a href="items.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M21 8.002 12 3 3 8.002V21h8v-6h2v6h8zM5 10.154l7-3.888 7 3.888V19h-4v-6H9v6H5z"/></svg></span>
+              Inventory Management
+            </a>
+            <a href="reports.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M3 3h18v2H3zm0 4h18v10H3zm0 12h18v2H3zm2-10v6h14v-6z"/></svg></span>
+              Reports & Analytics
+            </a>
+            <a href="user-management.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-9 9a7 7 0 0 1 14 0H3Zm18-3h-2v-2h2v2Zm0-4h-2V6h2z"/></svg></span>
+              User Management
+            </a>
+            <a href="connectors.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M8 8h3a1 1 0 1 1 0 2H8a3 3 0 1 0 0 6h3a1 1 0 1 1 0 2H8a5 5 0 1 1 0-10Zm5 0h3a5 5 0 1 1 0 10h-3a1 1 0 1 1 0-2h3a3 3 0 1 0 0-6h-3a1 1 0 1 1 0-2Z"/></svg></span>
+              Connectors
+            </a>
+            <a href="settings.html" class="group flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="m19.14 12.936.843-1.459-1.3-2.251-1.673.189a5.968 5.968 0 0 0-1.22-.706l-.546-1.6h-2.6l-.546 1.6a5.968 5.968 0 0 0-1.22.706l-1.673-.189-1.3 2.251.843 1.459a6.18 6.18 0 0 0 0 1.129l-.843 1.459 1.3 2.251 1.673-.189c.38.287.78.52 1.22.706l.546 1.6h2.6l.546-1.6c.44-.186.84-.419 1.22-.706l1.673.189 1.3-2.251-.843-1.459c.03-.373.03-.756 0-1.129ZM12 14.5A2.5 2.5 0 1 1 14.5 12 2.503 2.503 0 0 1 12 14.5Z"/></svg></span>
+              Settings
+            </a>
+          </nav>
+        </aside>
 
-      <div class="app-main ml-0 lg:ml-72 flex-1 flex flex-col min-w-0">
-        <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
-          <div class="mx-auto max-w-screen-2xl px-6 py-4 flex items-center gap-4">
-            <form class="flex-1">
-              <label class="relative block">
-                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-slate-400"><path d="M10 18a8 8 0 1 1 5.293-14.01l4.358 4.358-1.415 1.414-3.969-3.968A6 6 0 1 0 10 16a5.96 5.96 0 0 0 3.535-1.147l1.281 1.53A7.954 7.954 0 0 1 10 18Z"/></svg></span>
-                <input type="search" placeholder="Search orders by ID or customer name…" class="w-full rounded-2xl border-slate-200 bg-slate-50/70 pl-11 pr-4 h-11 focus:bg-white focus:ring-2 focus:ring-brand-200" />
-              </label>
-            </form>
-            <img src="https://i.pravatar.cc/64?img=5" alt="User avatar" class="h-8 w-8 rounded-full" />
-          </div>
-        </header>
+        <div class="app-main ml-0 lg:ml-72 flex-1 flex flex-col min-w-0">
+          <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
+            <div class="mx-auto max-w-screen-2xl px-6 py-4 flex items-center gap-4">
+              <form class="flex-1">
+                <label class="relative block">
+                  <span class="pointer-events-none absolute inset-y-0 left-3 grid place-content-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-slate-400"><path d="M10 18a8 8 0 1 1 5.293-14.01l4.358 4.358-1.415 1.414-3.969-3.968A6 6 0 1 0 10 16a5.96 5.96 0 0 0 3.535-1.147l1.281 1.53A7.954 7.954 0 0 1 10 18Z"/></svg></span>
+                  <input type="search" placeholder="Search orders by ID or customer name�" class="w-full rounded-2xl border-slate-200 bg-slate-50/70 pl-11 pr-4 h-11 focus:bg-white focus:ring-2 focus:ring-brand-200" />
+                </label>
+              </form>
+              <img src="https://i.pravatar.cc/64?img=5" alt="User avatar" class="h-8 w-8 rounded-full" />
+            </div>
+          </header>
 
-        <main class="mx-auto max-w-screen-2xl w-full px-6 pb-16 pt-8 space-y-6">
-          <div class="flex items-center justify-between">
-            <h2 class="text-3xl font-bold tracking-tight text-ink">Billing / Orders</h2>
-            <div class="hidden sm:flex items-center gap-3">
-              <button id="btn-export-orders" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium shadow-card">Export CSV</button>
-              <button id="btn-create-order" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-card">+ Create Order</button>
-            </div>
-          </div>
-
-          <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-              <p class="text-sm text-slate-500">Total Orders</p>
-              <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">2,148</h3><span class="text-emerald-600 text-sm font-semibold">↗︎ 12.1%</span></div>
-              <p class="mt-1 text-xs text-slate-400">vs last month</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-              <p class="text-sm text-slate-500">Revenue</p>
-              <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">₹18,50,000</h3><span class="text-emerald-600 text-sm font-semibold">+8.2%</span></div>
-              <p class="mt-1 text-xs text-slate-400">Last 30 days</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-              <p class="text-sm text-slate-500">Avg. Order Value</p>
-              <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">₹8,612</h3><span class="text-emerald-600 text-sm font-semibold">+3.4%</span></div>
-              <p class="mt-1 text-xs text-slate-400">Trailing 30 days</p>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-              <p class="text-sm text-slate-500">Pending Orders</p>
-              <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">12</h3><span class="text-rose-600 text-sm font-semibold">↗︎ 4.1%</span></div>
-              <p class="mt-1 text-xs text-slate-400">Waiting for payment / fulfillment</p>
-            </div>
-          </section>
-          <!-- Order modal + toasts -->
-          <!-- Step 1: Customer modal -->
-          <div id="order-customer-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-black/40" id="order-customer-backdrop"></div>
-            <div class="relative w-full max-w-lg rounded-3xl bg-white p-8 shadow-card">
-              <div class="mb-3 flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-ink">Customers Credentials</h3>
-                <button type="button" id="order-cust-skip" class="text-sm text-slate-500 hover:text-slate-700">Skip</button>
-              </div>
-              <div class="space-y-3">
-                <div>
-                  <label for="new-cust-name" class="block text-sm text-slate-600">Name</label>
-                  <input id="new-cust-name" class="mt-1 w-full rounded-lg border border-slate-200 p-2" placeholder="Enter Full Name" />
-                </div>
-                <div>
-                  <label for="new-cust-phone" class="block text-sm text-slate-600">WhatsApp Number</label>
-                  <input id="new-cust-phone" class="mt-1 w-full rounded-lg border border-slate-200 p-2" placeholder="Enter Valid Number" />
-                  <div id="order-customer-error" class="mt-1 text-sm text-rose-600 hidden"></div>
-                </div>
-                <div class="mt-4 flex items-center justify-end gap-2">
-                  <button type="button" id="order-cust-cancel" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Cancel</button>
-                  <button type="button" id="order-cust-next" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white">Next</button>
-                </div>
+          <main class="mx-auto max-w-screen-2xl w-full px-6 pb-16 pt-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h2 class="text-3xl font-bold tracking-tight text-ink">Billing / Orders</h2>
+              <div class="hidden sm:flex items-center gap-3">
+                <button id="btn-export-orders" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium shadow-card">Export CSV</button>
+                <button id="btn-create-order" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white shadow-card">+ Create Order</button>
               </div>
             </div>
-          </div>
 
-          <div id="order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-black/40" id="order-modal-backdrop"></div>
-            <div class="relative w-full max-w-4xl rounded-3xl bg-white p-8 shadow-card">
-              <h3 class="text-lg font-semibold text-ink mb-3">Final Steps</h3>
-              <form id="order-form" class="space-y-3">
-                <div>
-                  <label class="block text-sm text-slate-600">Customer</label>
-                  <div id="order-customer-summary" class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm">—</div>
-                  <input id="order-customer" type="hidden" />
+            <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+                <p class="text-sm text-slate-500">Total Orders</p>
+                <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">2,148</h3><span class="text-emerald-600 text-sm font-semibold">?? 12.1%</span></div>
+                <p class="mt-1 text-xs text-slate-400">vs last month</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+                <p class="text-sm text-slate-500">Revenue</p>
+                <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">?18,50,000</h3><span class="text-emerald-600 text-sm font-semibold">+8.2%</span></div>
+                <p class="mt-1 text-xs text-slate-400">Last 30 days</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+                <p class="text-sm text-slate-500">Avg. Order Value</p>
+                <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">?8,612</h3><span class="text-emerald-600 text-sm font-semibold">+3.4%</span></div>
+                <p class="mt-1 text-xs text-slate-400">Trailing 30 days</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+                <p class="text-sm text-slate-500">Pending Orders</p>
+                <div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-extrabold">12</h3><span class="text-rose-600 text-sm font-semibold">?? 4.1%</span></div>
+                <p class="mt-1 text-xs text-slate-400">Waiting for payment / fulfillment</p>
+              </div>
+            </section>
+            <!-- Order modal + toasts -->
+            <!-- Step 1: Customer modal -->
+            <div id="order-customer-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+              <div class="absolute inset-0 bg-black/40" id="order-customer-backdrop"></div>
+              <div class="relative w-full max-w-lg rounded-3xl bg-white p-8 shadow-card">
+                <div class="mb-3 flex items-center justify-between">
+                  <h3 class="text-lg font-semibold text-ink">Customers Credentials</h3>
+                  <button type="button" id="order-cust-skip" class="text-sm text-slate-500 hover:text-slate-700">Skip</button>
                 </div>
-                <div>
-                  <div class="flex items-baseline justify-between">
-                    <label class="block text-sm text-slate-600">Add items</label>
+                <div class="space-y-3">
+                  <div>
+                    <label for="new-cust-name" class="block text-sm text-slate-600">Name</label>
+                    <input id="new-cust-name" class="mt-1 w-full rounded-lg border border-slate-200 p-2" placeholder="Enter Full Name" />
                   </div>
-                  <div class="mt-2 grid grid-cols-12 gap-2 items-end">
-                    <div class="col-span-9">
-                      <label class="block text-xs text-slate-500 mb-1">Item</label>
-                      <select id="picker-item" class="w-full rounded-lg border border-slate-200 p-2"></select>
-                    </div>
-                    <div class="col-span-2">
-                      <label class="block text-xs text-slate-500 mb-1">Unit</label>
-                      <input id="picker-qty" type="number" min="1" value="1" class="w-full rounded-lg border border-slate-200 p-2" />
-                    </div>
-                    <div class="col-span-1">
-                      <button type="button" id="picker-add-btn" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white w-full">Add</button>
-                    </div>
+                  <div>
+                    <label for="new-cust-phone" class="block text-sm text-slate-600">WhatsApp Number</label>
+                    <input id="new-cust-phone" class="mt-1 w-full rounded-lg border border-slate-200 p-2" placeholder="Enter Valid Number" />
+                    <div id="order-customer-error" class="mt-1 text-sm text-rose-600 hidden"></div>
                   </div>
-                  <div id="picker-error" class="mt-1 text-sm text-rose-600 hidden"></div>
-                  <div id="picker-list" class="mt-3 divide-y divide-slate-200 text-sm"></div>
-                  <input type="hidden" id="order-items" value="[]" />
-                </div>
-                <div class="mt-8 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <button type="button" id="order-back-btn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Back</button>
-                  <div class="flex items-center gap-2">
-                    <button type="button" id="order-cancel-btn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Cancel</button>
-                    <button type="button" id="order-submit-print-btn" class="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white shadow-card">Create & Print</button>
+                  <div class="mt-4 flex items-center justify-end gap-2">
+                    <button type="button" id="order-cust-cancel" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Cancel</button>
+                    <button type="button" id="order-cust-next" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white">Next</button>
                   </div>
                 </div>
-                <div id="order-form-error" class="mt-2 text-sm text-rose-600 hidden"></div>
-                </form>
+              </div>
             </div>
-          </div>
-          <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-2"></div>
+
+            <div id="order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+              <div class="absolute inset-0 bg-black/40" id="order-modal-backdrop"></div>
+              <div class="relative w-full max-w-4xl rounded-3xl bg-white p-8 shadow-card">
+                <h3 class="text-lg font-semibold text-ink mb-3">Final Steps</h3>
+                <form id="order-form" class="space-y-3">
+                  <div>
+                    <label class="block text-sm text-slate-600">Customer</label>
+                    <div id="order-customer-summary" class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm">�</div>
+                    <input id="order-customer" type="hidden" />
+                  </div>
+                  <div>
+                    <div class="flex items-baseline justify-between">
+                      <label class="block text-sm text-slate-600">Add items</label>
+                    </div>
+                    <div class="mt-2 grid grid-cols-12 gap-2 items-end">
+                      <div class="col-span-9">
+                        <label class="block text-xs text-slate-500 mb-1">Item</label>
+                        <select id="picker-item" class="w-full rounded-lg border border-slate-200 p-2"></select>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs text-slate-500 mb-1">Unit</label>
+                        <input id="picker-qty" type="number" min="1" value="1" class="w-full rounded-lg border border-slate-200 p-2" />
+                      </div>
+                      <div class="col-span-1">
+                        <button type="button" id="picker-add-btn" class="rounded-xl bg-brand-500 px-3 py-2 text-sm font-semibold text-white w-full">Add</button>
+                      </div>
+                    </div>
+                    <div id="picker-error" class="mt-1 text-sm text-rose-600 hidden"></div>
+                    <div id="picker-list" class="mt-3 divide-y divide-slate-200 text-sm"></div>
+                    <input type="hidden" id="order-items" value="[]" />
+                  </div>
+                  <div class="mt-8 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                    <button type="button" id="order-back-btn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Back</button>
+                    <div class="flex items-center gap-2">
+                      <button type="button" id="order-cancel-btn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Cancel</button>
+                      <button type="button" id="order-submit-print-btn" class="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white shadow-card">Create & Print</button>
+                    </div>
+                  </div>
+                  <div id="order-form-error" class="mt-2 text-sm text-rose-600 hidden"></div>
+                  </form>
+              </div>
+            </div>
+            <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-2"></div>
 
           <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
             <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div class="flex items-center gap-2">
-                <label class="sr-only" for="status">Order Status</label>
-                <select id="status" class="rounded-xl border-slate-200 bg-slate-50/70 h-10 text-sm">
-                  <option>All Statuses</option>
-                  <option>Completed</option>
-                  <option>Pending</option>
-                  <option>Canceled</option>
-                </select>
-                <select class="rounded-xl border-slate-200 bg-slate-50/70 h-10 text-sm">
-                  <option>Any Customer</option>
-                  <option>Rajesh Sharma</option>
-                  <option>Priya Verma</option>
-                </select>
+              <div class="flex flex-wrap items-center gap-2">
+                <!-- Removed status and customer dropdowns -->
+                <!-- Moved date filters to top -->
+                <label class="text-sm text-slate-500 ml-2">From</label>
+                <input id="filter-from" type="date" class="rounded-lg border border-slate-200 p-2 h-10" />
+                <label class="text-sm text-slate-500">To</label>
+                <input id="filter-to" type="date" class="rounded-lg border border-slate-200 p-2 h-10" />
+                <button id="filter-apply" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Apply</button>
+                <button id="filter-clear" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">Clear</button>
               </div>
               <div class="flex items-center gap-2 text-sm">
                 <button class="rounded-xl border border-slate-200 bg-white px-3 py-2 font-medium shadow-card">Bulk Actions</button>
@@ -200,33 +196,25 @@
               </div>
             </div>
 
-            <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
-              <table class="min-w-full divide-y divide-slate-200">
-                <thead class="bg-slate-50 text-slate-600 text-sm">
-                  <tr>
-                    <th class="px-4 py-3 text-left font-medium">Order ID</th>
-                    <th class="px-4 py-3 text-left font-medium">Customer</th>
-                    <th class="px-4 py-3 text-left font-medium">Items</th>
-                    <th class="px-4 py-3 text-left font-medium">Product Price</th>
-                    <th class="px-4 py-3 text-left font-medium">GST</th>
-                    <th class="px-4 py-3 text-left font-medium">Total</th>
-                    <th class="px-4 py-3 text-left font-medium">Status</th>
-                    <th class="px-4 py-3 text-left font-medium">Date</th>
-                  </tr>
-                </thead>
-                <tbody id="orders-tbody" class="divide-y divide-slate-200 text-sm"></tbody>
-              </table>
-            </div>
-
-            <div class="mt-4 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <label class="text-sm text-slate-500">From</label>
-                <input id="filter-from" type="date" class="rounded-lg border border-slate-200 p-2" />
-                <label class="text-sm text-slate-500">To</label>
-                <input id="filter-to" type="date" class="rounded-lg border border-slate-200 p-2" />
-                <button id="filter-apply" class="rounded-xl border border-slate-200 bg-white px-3 py-1 text-sm">Apply</button>
-                <button id="filter-clear" class="rounded-xl border border-slate-200 bg-white px-3 py-1 text-sm">Clear</button>
+              <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+                <table class="min-w-full divide-y divide-slate-200">
+                  <thead class="bg-slate-50 text-slate-600 text-sm">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-medium">Order ID</th>
+                      <th class="px-4 py-3 text-left font-medium">Customer</th>
+                      <th class="px-4 py-3 text-left font-medium">Items</th>
+                      <th class="px-4 py-3 text-left font-medium">Product Price</th>
+                      <th class="px-4 py-3 text-left font-medium">GST</th>
+                      <th class="px-4 py-3 text-left font-medium">Total</th>
+                      <th class="px-4 py-3 text-left font-medium">Status</th>
+                      <th class="px-4 py-3 text-left font-medium">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="orders-tbody" class="divide-y divide-slate-200 text-sm"></tbody>
+                </table>
               </div>
+
+            <div class="mt-4 flex items-center justify-end">
               <div class="flex items-center gap-2">
                 <button id="page-prev" class="rounded-xl border border-slate-200 bg-white px-3 py-1 text-sm">Previous</button>
                 <span id="page-info" class="text-sm text-slate-600">Page 1</span>
@@ -234,44 +222,22 @@
               </div>
             </div>
 
+            <!-- Recent Activity (informational) -->
             <div class="mt-4 flex flex-col gap-3">
               <h3 class="text-lg font-semibold text-ink">Recent Activity</h3>
-              <ol class="space-y-3 text-sm">
-                <li class="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                  <div>
-                    <div class="font-semibold text-ink">#ORD-1110 • Omkar Interiors</div>
-                    <div class="text-slate-600">1× Sectional Sofa</div>
-                  </div>
-                  <div class="text-right">
-                    <div class="font-medium">Mon, 10:00 AM</div>
-                    <span class="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Completed</span>
-                  </div>
-                </li>
-                <li class="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                  <div>
-                    <div class="font-semibold text-ink">#ORD-1108 • Tech Solutions</div>
-                    <div class="text-slate-600">3× Ergonomic Office Chair</div>
-                  </div>
-                  <div class="text-right">
-                    <div class="font-medium">Fri, 04:15 PM</div>
-                    <span class="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Completed</span>
-                  </div>
-                </li>
-                <li class="flex items-start justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                  <div>
-                    <div class="font-semibold text-ink">#ORD-1107 • Zeta Traders</div>
-                    <div class="text-slate-600">5× Office Chair</div>
-                  </div>
-                  <div class="text-right">
-                    <div class="font-medium">Fri, 03:30 PM</div>
-                    <span class="mt-1 inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
-                  </div>
-                </li>
-              </ol>
+              <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-700">
+                <p class="mb-2">Your last few order actions will appear here (create, complete, or cancel). Use the date filter above to view a specific window.</p>
+                <ul class="list-disc pl-5 space-y-1">
+                  <li>Use �Create Order� to add a new sale and print a receipt instantly.</li>
+                  <li>Apply the From/To filters to narrow the orders in the table.</li>
+                  <li>Use �Bulk Actions� for batch updates or �Print Invoices� for selected rows.</li>
+                </ul>
+              </div>
             </div>
           </section>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
-  </body>
-</html>
+    </body>
+  </html>
+

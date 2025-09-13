@@ -73,12 +73,16 @@ tailwind.config = {
     if (!window.ApexCharts) return;
     if (el._apexChart) { try { el._apexChart.destroy(); } catch(_){} el._apexChart = null; }
     const isDark = document.documentElement.classList.contains('dark');
+    const fmtINR = (v) => { const n = Number(v)||0; try { return new Intl.NumberFormat('en-IN',{ style:'currency', currency:'INR', maximumFractionDigits:2 }).format(n).replace(/^₹\s?/, '₹'); } catch(_) { return '₹' + n.toFixed(2); } };
+    // Round small fp errors for display
+    const data = Array.isArray(series.values) ? series.values.map(v => Math.round((Number(v)||0)*100)/100) : [];
     const chart = new ApexCharts(el, {
       chart: { type: 'area', height: 260, toolbar: { show: false }, foreColor: isDark ? '#CBD5E1' : undefined },
       theme: { mode: isDark ? 'dark' : 'light' },
-      series: [{ name: 'Sales', data: series.values }],
+      series: [{ name: 'Sales', data }],
       xaxis: { categories: series.labels, labels: { rotate: 0, style: { colors: isDark ? '#94a3b8' : '#94a3b8' } } },
-      yaxis: { labels: { style: { colors: isDark ? '#94a3b8' : '#94a3b8' } } },
+      yaxis: { min: 0, forceNiceScale: true, labels: { style: { colors: isDark ? '#94a3b8' : '#94a3b8' }, formatter: (val) => fmtINR(val) } },
+      tooltip: { y: { formatter: (val) => fmtINR(val) } },
       colors: ['#13A4EC'],
       dataLabels: { enabled: false },
       grid: { borderColor: isDark ? '#334155' : '#e2e8f0', strokeDashArray: 3 },
@@ -141,6 +145,13 @@ tailwind.config = {
       if (totalCustomersEl) totalCustomersEl.textContent = (Array.isArray(customers) ? customers.length : '0');
       if (ordersCompletedEl) ordersCompletedEl.textContent = completed;
       if (ordersCancelledEl) ordersCancelledEl.textContent = cancelled;
+      // Remove any loading hints now that data is filled
+      try {
+        document.querySelectorAll('p.text-xs.text-slate-400').forEach(el => {
+          const t = (el.textContent || '').trim().toLowerCase();
+          if (t.startsWith('loading')) el.remove();
+        });
+      } catch(_){}
 
       // Compute deltas for cards
       try {
