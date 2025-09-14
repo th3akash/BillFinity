@@ -114,7 +114,7 @@ class OrderOut(BaseModel):
     status: OrderStatus
     created_at: datetime
     updated_at: datetime
-    items: List[OrderItemOut] = []
+    items: List[OrderItemOut] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
