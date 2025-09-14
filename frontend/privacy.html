@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BillFinity • Privacy Policy</title>
+  <meta name="description" content="BillFinity Privacy Policy">
+  <style>
+    :root{
+      --ink:#0b1320;
+      --muted:#475569;
+      --bg:#ffffff;
+      --line:#e2e8f0;
+      --brand:#0E86C4;
+      --accent:#0b61a4;
+    }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    /* Full-bleed layout */
+    .header{position:sticky;top:0;background:linear-gradient(180deg,#fff, #fbfdff);border-bottom:1px solid var(--line);z-index:10}
+    .header-inner{max-width:1280px;margin:0 auto;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+    .page-title{font-size:28px;font-weight:800;margin:0}
+    .subtitle{color:var(--muted);margin:6px 0 0;font-size:15px}
+    .main{max-width:1280px;margin:0 auto;padding:24px 20px 60px}
+    /* Content grid with full-page feel */
+    .content{display:grid;grid-template-columns:300px 1fr;gap:28px}
+    /* Tablet */
+    @media (max-width: 1024px){
+      .content{grid-template-columns:240px 1fr}
+    }
+    /* Mobile stacks */
+    @media (max-width: 860px){
+      .content{grid-template-columns:1fr}
+    }
+    /* TOC as sticky on desktop, collapsible on mobile */
+    details.toc{
+      position:sticky; top:84px; align-self:start;
+      border:1px solid var(--line);border-radius:12px;background:#fbfdff;
+      padding:12px 14px;
+    }
+    details.toc[open]{padding-bottom:12px}
+    details.toc summary{
+      list-style:none;cursor:pointer;font-weight:700;color:var(--accent);
+      display:flex;align-items:center;gap:8px;margin:0
+    }
+    details.toc summary::-webkit-details-marker{display:none}
+    .toc ol{margin:10px 0 0;padding-left:18px}
+    .toc li{margin:6px 0}
+    .toc a{font-size:14px;color:var(--accent)}
+    @media (max-width: 860px){
+      details.toc{position:relative; top:auto; background:#f7fbff}
+    }
+    /* Sections are full-width, clean */
+    section{border:1px solid var(--line);border-radius:14px;padding:18px 18px;margin-bottom:16px;background:#fff;box-shadow:0 2px 14px rgba(2,8,23,.03)}
+    section h2{font-size:20px;margin:0 0 10px}
+    ul{margin:8px 0 8px 18px}
+    .callout{border-left:4px solid var(--accent);background:#f0f7ff;padding:10px 12px;border-radius:8px;margin:12px 0;color:#063b56}
+    footer{border-top:1px solid var(--line);padding:18px 20px;background:linear-gradient(#fff, #fafcff)}
+    .legal{max-width:1280px;margin:0 auto;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+    /* Large touch targets on mobile */
+    @media (max-width: 480px){
+      section{padding:16px}
+      .page-title{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <div class="brand"><span class="dot" aria-hidden="true"></span> BillFinity</div>
+      <div class="subtitle">Privacy Policy</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Privacy Policy</h1>
+    <p class="subtitle">This Privacy Policy explains how BillFinity (“BillFinity,” “we,” “us,” or “our”) collects, uses, discloses, and safeguards information in connection with our billing and invoicing software and related services (“Services”).</p>
+
+    <div class="content">
+      <details class="toc" open>
+        <summary aria-label="Table of contents">Contents</summary>
+        <ol>
+          <li><a href="#scope">Scope & Roles</a></li>
+          <li><a href="#definitions">Key Definitions</a></li>
+          <li><a href="#data-we-collect">Data We Collect</a></li>
+          <li><a href="#how-we-use">How We Use Data</a></li>
+          <li><a href="#lawful-basis">Lawful Basis / Legal Grounds</a></li>
+          <li><a href="#sharing">Data Sharing & Disclosures</a></li>
+          <li><a href="#international">International Transfers</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#retention">Retention</a></li>
+          <li><a href="#rights">Your Privacy Rights</a></li>
+          <li><a href="#cookies">Cookies & Tracking</a></li>
+          <li><a href="#children">Children’s Privacy</a></li>
+          <li><a href="#changes">Changes to this Policy</a></li>
+          <li><a href="#contact">Contact & Controller</a></li>
+          <li><a href="#jurisdiction">Jurisdiction & Dispute Resolution</a></li>
+        </ol>
+      </details>
+
+      <div>
+        <section id="scope">
+          <h2>1) Scope & Roles</h2>
+          <p>BillFinity provides enterprise billing and invoicing tools used by business customers (“Customers”). Depending on the context, we may act as a <strong>data processor/service provider</strong> for Customer-controlled data (e.g., end-customer records uploaded to the Services) and as a <strong>data controller/business</strong> for BillFinity account data, platform telemetry, marketing, and support information.</p>
+          <div class="callout">If you are an end customer of a business that uses BillFinity, please contact that business directly to exercise your privacy rights for data they control.</div>
+        </section>
+
+        <section id="definitions">
+          <h2>2) Key Definitions</h2>
+          <ul>
+            <li><strong>Personal Data</strong> / <strong>Personal Information</strong>: information that identifies or can reasonably be linked to an individual.</li>
+            <li><strong>Processing</strong>: any operation performed on data, such as collection, storage, use, disclosure, or deletion.</li>
+            <li><strong>Applicable Laws</strong>: privacy and data protection laws that may apply to the processing, including (as applicable) the GDPR, UK GDPR, CCPA/CPRA, and other local laws.</li>
+          </ul>
+        </section>
+
+        <section id="data-we-collect">
+          <h2>3) Data We Collect</h2>
+          <ul>
+            <li><strong>Account & Business Data:</strong> company name, address, tax IDs, phone, email; user name, email, role, authentication and audit logs.</li>
+            <li><strong>Customer & Transaction Data (Customer-Controlled):</strong> end-customer identities, contact details, invoice line items, order details, payment references.</li>
+            <li><strong>Usage & Device Data:</strong> log data, IP address, browser/OS, settings, and product interaction events used to secure and improve the Services.</li>
+            <li><strong>Communications:</strong> content of support requests and feedback you send to us.</li>
+          </ul>
+        </section>
+
+        <section id="how-we-use">
+          <h2>4) How We Use Data</h2>
+          <ul>
+            <li>Provide, operate, secure, and troubleshoot the Services.</li>
+            <li>Generate invoices, send notifications (e.g., email/SMS/WhatsApp if enabled), and facilitate integrations.</li>
+            <li>Measure performance, conduct analytics, and improve features and usability.</li>
+            <li>Comply with legal, regulatory, tax, and accounting obligations; prevent fraud and abuse.</li>
+            <li>Communicate with you about service updates, security alerts, and administrative messages.</li>
+            <li>With your consent or as otherwise permitted by law, send marketing communications (you may opt out at any time).</li>
+          </ul>
+        </section>
+
+        <section id="lawful-basis">
+          <h2>5) Lawful Basis / Legal Grounds</h2>
+          <p>Where required by Applicable Laws, we rely on one or more of the following legal bases:</p>
+          <ul>
+            <li><strong>Contract:</strong> processing necessary to provide the Services you requested.</li>
+            <li><strong>Legitimate Interests:</strong> securing the platform, improving Services, and preventing misuse, balanced against your rights.</li>
+            <li><strong>Legal Obligations:</strong> compliance with laws, regulations, and government requests.</li>
+            <li><strong>Consent:</strong> where required for specific activities (e.g., certain marketing or cookies). You may withdraw consent at any time.</li>
+          </ul>
+        </section>
+
+        <section id="sharing">
+          <h2>6) Data Sharing & Disclosures</h2>
+          <p>We do <em>not</em> sell personal information. We may share data as follows:</p>
+          <ul>
+            <li><strong>Service Providers / Subprocessors:</strong> hosting, storage, communications, analytics, and security vendors under written agreements.</li>
+            <li><strong>Integrations:</strong> third-party channels you enable (e.g., email/SMS/WhatsApp gateways) to deliver messages or documents.</li>
+            <li><strong>Corporate Transactions:</strong> in a merger, acquisition, financing, or sale of assets, subject to appropriate safeguards.</li>
+            <li><strong>Legal & Safety:</strong> to comply with law or protect rights, safety, and property of BillFinity, our Customers, or the public.</li>
+          </ul>
+          <p class="muted">Upon request, enterprise Customers may obtain our current list of subprocessors and security overview.</p>
+        </section>
+
+        <section id="international">
+          <h2>7) International Transfers</h2>
+          <p>Your data may be processed in jurisdictions other than your own. Where required, we implement safeguards such as Standard Contractual Clauses or equivalent transfer mechanisms.</p>
+        </section>
+
+        <section id="security">
+          <h2>8) Security</h2>
+          <p>We apply administrative, technical, and physical measures designed to protect data, including access controls, encryption in transit, segmentation, logging, and regular reviews. No method of transmission or storage is 100% secure; we maintain incident response procedures and assess vendors for reasonable security.</p>
+        </section>
+
+        <section id="retention">
+          <h2>9) Retention</h2>
+          <p>We retain data only for as long as necessary to provide the Services, comply with legal obligations, resolve disputes, and enforce agreements. Retention periods vary by data category and Customer instructions.</p>
+        </section>
+
+        <section id="rights">
+          <h2>10) Your Privacy Rights</h2>
+          <p>Subject to Applicable Laws and context (controller vs. processor), you may have rights to:</p>
+          <ul>
+            <li>Access, correct, or delete personal data;</li>
+            <li>Portability of certain data;</li>
+            <li>Object to or restrict certain processing;</li>
+            <li>Opt out of marketing communications;</li>
+            <li>Appeal certain decisions; and</li>
+            <li>Not be discriminated against for exercising privacy rights (where applicable).</li>
+          </ul>
+          <p>Requests related to Customer-controlled data should be directed to the relevant Customer (your service provider or merchant). For BillFinity-controlled data, use the contact details below.</p>
+        </section>
+
+        <section id="cookies">
+          <h2>11) Cookies & Tracking</h2>
+          <p>We use cookies and similar technologies to operate the Services, remember preferences, and perform analytics. You can adjust browser settings to refuse or delete cookies; however, some features may not function properly. If we operate a separate Cookie Notice, that notice governs cookie-specific details.</p>
+        </section>
+
+        <section id="children">
+          <h2>12) Children’s Privacy</h2>
+          <p>The Services are intended for use by businesses and are not directed to children under the age of 16. We do not knowingly collect personal information from children.</p>
+        </section>
+
+        <section id="changes">
+          <h2>13) Changes to this Policy</h2>
+          <p>We may modify this Privacy Policy to reflect legal, technical, or business developments. Material changes will be communicated through the Services or by email where appropriate. Continued use of the Services indicates acceptance of the updated terms.</p>
+        </section>
+
+        <section id="contact">
+          <h2>14) Contact & Controller</h2>
+          <p>For questions, requests, or complaints about this Privacy Policy or our data practices, contact us at <a href="mailto:info@th3ai.com">info@th3ai.com</a>.</p>
+          <p><strong>BillFinity</strong> (data controller for BillFinity-controlled data). <!-- TODO: Add legal entity name and registered address if different. --></p>
+        </section>
+
+        <section id="jurisdiction">
+          <h2>15) Jurisdiction & Dispute Resolution</h2>
+          <p>Any dispute relating to this Privacy Policy or the processing of personal data by BillFinity will be subject to the governing law and jurisdiction specified in your master services agreement or, if none, the laws and courts of the principal place of business of BillFinity, unless otherwise required by Applicable Laws.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="legal">
+      <div class="brand"><span class="dot" aria-hidden="true"></span> BillFinity</div>
+      <div>© 2025 BillFinity. All rights reserved.</div>
+    </div>
+  </footer>
+</body>
+</html>
