@@ -19,7 +19,7 @@ function renderOrders(orders) {
   const rows = orders.map(o => {
     const customerAvatar = (o.customer && o.customer.avatar) || `https://i.pravatar.cc/80?img=1`;
     const customerName = (o.customer && (o.customer.name || o.customer.full_name)) || (o.customer && o.customer.email) || '';
-    const itemsDesc = Array.isArray(o.items) ? o.items.map(it => `${it.quantity || 1}� ${it.name || it.title || ''}`).join(', ') : (o.items || '');
+    const itemsDesc = Array.isArray(o.items) ? o.items.map(it => `${it.quantity || 1}× ${it.name || it.title || ''}`).join(', ') : (o.items || '');
     const total = o.total != null ? '\u20b9' + o.total : '';
     const date = (window.formatDate ? window.formatDate(o.date || o.created_at || '') : (o.date || o.created_at || ''));
 
