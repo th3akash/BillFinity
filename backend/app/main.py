@@ -1,3 +1,4 @@
+import logging
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +9,7 @@ from .routes import customers, items, orders, users, settings
 from .websocket import orders_ws
 
 app = FastAPI(title="BillFinity Backend")
+logger = logging.getLogger(__name__)
 
 
 # --- CORS (robust parsing + safe wildcard handling) ---
@@ -38,6 +40,7 @@ def _on_startup():
     try:
         init_db()
     except Exception:
+        logger.exception("DB init failed")
         # Don't crash app if DB migrations fail on first boot
         pass
 
