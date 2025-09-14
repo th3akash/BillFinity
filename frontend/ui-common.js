@@ -27,11 +27,11 @@
 })();
 
 (function(){
-  // Apply optional scale to any <dotlottie-player dat�scale=N/A1.2">
+  // Apply optional scale to any <dotlottie-player dat×scale=N/A1.2">
   function applyLottieScale(){
     try {
-      document.querySelectorAll('dotlottie-player[dat�scale]').forEach(function(el){
-        const v = parseFloat(el.getAttribute('dat�scale'));
+      document.querySelectorAll('dotlottie-player[dat×scale]').forEach(function(el){
+        const v = parseFloat(el.getAttribute('dat×scale'));
         if (!Number.isNaN(v) && v > 0){
           try { el.style.transformOrigin = el.style.transformOrigin || 'center'; } catch(_){}
           try { el.style.transform = `scale(${v})` + (el.style.transform && !el.style.transform.includes('scale(') ? ' ' + el.style.transform : ''); } catch(_){}
@@ -87,7 +87,7 @@
         target = this.querySelector('svg') || this;
       }
       if (!target) {
-        const btn = document.getElementById('btn-theme-toggle') || document.querySelector('button[ari�label=N/AThemeN/A]');
+        const btn = document.getElementById('btn-theme-toggle') || document.querySelector('button[ari×label=N/AThemeN/A]');
         if (btn) target = btn.querySelector('svg') || btn;
       }
       if (target) {
@@ -130,34 +130,34 @@
     const headerBar = document.querySelector('header .flex.items-center.gap-4');
     if (!headerBar) return;
     let tools = headerBar.querySelector('.js-tools');
-    if (!tools){ tools = document.createElement('div'); tools.className='js-tools hidden sm:flex items-center gap-3 text-sm'; headerBar.appendChild(tools); }
+    if (!tools){ tools = document.createElement('div'); tools.className='js-tools flex items-center gap-3 text-sm'; headerBar.appendChild(tools); }
 
     // Wire existing buttons first (if page already provides them)
-    document.querySelectorAll('button[ari�label=N/ANotificationsN/A]').forEach(function(b){
+    document.querySelectorAll('button[ari×label=N/ANotificationsN/A]').forEach(function(b){
       if (b.dataset.wired) return; b.dataset.wired='1';
       b.addEventListener('click', function(e){ const dd = buildNotifDropdown(b); dd.classList.toggle('hidden'); e.stopPropagation(); });
     });
-    document.querySelectorAll('button[ari�label=N/AThemeN/A]').forEach(function(b){
+    document.querySelectorAll('button[ari×label=N/AThemeN/A]').forEach(function(b){
       if (b.dataset.wired) return; b.dataset.wired='1';
       b.addEventListener('click', toggleTheme);
     });
     document.addEventListener('click', function(){ var d=document.getElementById('notif-dropdown'); if (d) d.classList.add('hidden'); });
 
     // If no existing, add defaults
-    if (!document.querySelector('button[ari�label=N/ANotificationsN/A]')){
+    if (!document.querySelector('button[ari×label=N/ANotificationsN/A]')){
       const btnN = document.createElement('button');
       btnN.id='btn-notifications';
       btnN.className='rounded-xl border border-slate-200 bg-white p-2 shadow-card';
-      btnN.setAttribute('ari�label','Notifications');
+      btnN.setAttribute('ari×label','Notifications');
       btnN.innerHTML = '<svg xmlns=N/Ahttp://www.w3.org/2000/svg" viewBox=N/A0 0 24 24" fill=N/AcurrentColor" class="h-5 w-5 text-slate-600"><path d=N/AM12 22a2.5 2.5 0 0 0 2.45-2H9.55A2.5 2.5 0 0 0 12 22Zm6-6v-4a6 6 0 1 0-12 0v4l-2 2v1h16v-1ZN/A/></svg>';
       tools.appendChild(btnN);
       btnN.addEventListener('click', function(e){ const dd = buildNotifDropdown(btnN); dd.classList.toggle('hidden'); e.stopPropagation(); });
     }
-    if (!document.querySelector('button[ari�label=N/AThemeN/A]')){
+    if (!document.querySelector('button[ari×label=N/AThemeN/A]')){
       const btnT = document.createElement('button');
       btnT.id='btn-theme-toggle';
       btnT.className='rounded-xl border border-slate-200 bg-white p-2 shadow-card';
-      btnT.setAttribute('ari�label','Theme');
+      btnT.setAttribute('ari×label','Theme');
       btnT.innerHTML = '<svg xmlns=N/Ahttp://www.w3.org/2000/svg" viewBox=N/A0 0 24 24" fill=N/AcurrentColor" class="h-5 w-5 text-slate-600"><path d=N/AM6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8L6.76 4.84zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zM20 11v2h3v-2h-3zm-1.95-6.95l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 5a7 7 0 1 0 7 7 7.008 7.008 0 0 0-7-7zN/A/></svg>';
       tools.appendChild(btnT);
       btnT.addEventListener('click', toggleTheme);
@@ -249,8 +249,8 @@
     const el = ensureViewer();
     const title = el.querySelector('#gv-title');
     const content = el.querySelector('#gv-content');
-    title.textContent = 'Loading…';
-    content.innerHTML = '<div class="text-slate-500">Please wait…</div>';
+    title.textContent = 'Loadingâ¦';
+    content.innerHTML = '<div class="text-slate-500">Please waitâ¦</div>';
     el.classList.remove('hidden');
     try { document.documentElement.style.overflow = 'hidden'; } catch(_){}
     try {
@@ -271,25 +271,25 @@
       }
       let html = '';
       if (type === 'customer'){
-        title.textContent = `Customer • #${d.id}`;
+        title.textContent = `Customer â¢ #${d.id}`;
         html = `
           <div class="space-y-1">
             <div class="text-base font-semibold">${d.name || ''}</div>
-            <div class="text-sm text-slate-600">${[d.email, d.phone].filter(Boolean).join(' · ')}</div>
-            <div class="text-sm text-slate-600">Company: ${d.company_name || '—'}</div>
+            <div class="text-sm text-slate-600">${[d.email, d.phone].filter(Boolean).join(' Â· ')}</div>
+            <div class="text-sm text-slate-600">Company: ${d.company_name || 'â'}</div>
             <div class="text-xs text-slate-500">Created: ${window.formatDate ? window.formatDate(d.created_at||Date.now()) : (new Date(d.created_at||Date.now())).toLocaleString()}</div>
           </div>`;
       } else if (type === 'item'){
-        title.textContent = `Item • #${d.id}`;
+        title.textContent = `Item â¢ #${d.id}`;
         html = `
           <div class="space-y-1">
             <div class="text-base font-semibold">${d.name || ''} <span class="text-slate-500 font-normal">(${d.sku || ''})</span></div>
-            <div class="text-sm text-slate-600">Category: ${d.category || '—'}</div>
+            <div class="text-sm text-slate-600">Category: ${d.category || 'â'}</div>
             <div class="text-sm text-slate-600">Price: \u20b9${parseFloat(d.price||0).toLocaleString('en-IN')}</div>
             <div class="text-sm text-slate-600">In Stock: ${d.in_stock ?? d.stock ?? 0}</div>
           </div>`;
       } else if (type === 'order'){
-        title.textContent = `Order • #${d.id}`;
+        title.textContent = `Order â¢ #${d.id}`;
         const arr = Array.isArray(d.items) ? d.items : [];
         const nameFromCache = function(it){
           try {
@@ -306,23 +306,23 @@
           const qty = (it.qty != null ? it.qty : (it.quantity != null ? it.quantity : 1));
           const nm = it.name || it.item_name || nameFromCache(it) || (it.sku ? `SKU ${it.sku}` : `Item ${it.item_id || it.id || ''}`);
           const price = it.price != null ? `\u20b9${parseFloat(it.price||0).toLocaleString('en-IN')}` : '';
-          return `<li class=\N/Aflex items-center justify-between\"><span>${qty}× ${nm}</span>${price?`<span class=\N/Atext-slate-500\">${price}</span>`:''}</li>`;
+          return `<li class=\N/Aflex items-center justify-between\"><span>${qty}Ã ${nm}</span>${price?`<span class=\N/Atext-slate-500\">${price}</span>`:''}</li>`;
         }).join('');
         html = `
           <div class=\N/Aspace-y-2\">
             <div class=\N/Atext-base\">Status: <span class=\N/Afont-semibold\">${(d.status||'').toString().toUpperCase()}</span></div>
             <div class=\N/Atext-sm text-slate-600\">Total: \u20b9${parseFloat(d.total||0).toLocaleString('en-IN')}</div>
             <div class=\N/Atext-sm font-medium text-ink mt-2\">Items (${arr.length})</div>
-            ${arr.length ? `<ul class=\N/Aspace-y-1\">${itemsList}</ul>` : '<div class=\N/Atext-slate-500\">—</div>'}
+            ${arr.length ? `<ul class=\N/Aspace-y-1\">${itemsList}</ul>` : '<div class=\N/Atext-slate-500\">â</div>'}
             <div class=\N/Atext-xs text-slate-500\">${window.formatDate ? window.formatDate(d.created_at||d.date||Date.now()) : (new Date(d.created_at||d.date||Date.now())).toLocaleString()}</div>
           </div>`;
       } else if (type === 'user'){
-        title.textContent = `User • #${d.id}`;
+        title.textContent = `User â¢ #${d.id}`;
         html = `
           <div class="space-y-1">
             <div class="text-base font-semibold">${d.name || ''}</div>
-            <div class="text-sm text-slate-600">${[d.email, d.role].filter(Boolean).join(' · ')}</div>
-            <div class="text-xs text-slate-500">Joined: ${d.created_at ? (window.formatDate ? window.formatDate(d.created_at) : new Date(d.created_at).toLocaleString()) : '—'}</div>
+            <div class="text-sm text-slate-600">${[d.email, d.role].filter(Boolean).join(' Â· ')}</div>
+            <div class="text-xs text-slate-500">Joined: ${d.created_at ? (window.formatDate ? window.formatDate(d.created_at) : new Date(d.created_at).toLocaleString()) : 'â'}</div>
           </div>`;
       }
       content.innerHTML = html;
