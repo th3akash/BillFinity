@@ -125,7 +125,8 @@ function openItemModal(data = null) {
   document.getElementById('item-sku').value = data && data.sku ? data.sku : '';
   document.getElementById('item-category').value = data && data.category ? data.category : '';
   document.getElementById('item-price').value = data && data.price ? data.price : '';
-document.getElementById('item-stock').value = data && (data.stock != null ? data.stock : data.in_stock) ? (data.stock != null ? data.stock : data.in_stock) : '';
+  const stock = data ? (data.stock ?? data.in_stock ?? '') : '';
+  document.getElementById('item-stock').value = stock;
   document.getElementById('item-reorder').value = data && data.reorder_point ? data.reorder_point : '';
   try { document.getElementById('item-gst').value = (data && (data.gst_rate != null) ? String(data.gst_rate) : '18'); } catch(_){ }
   itemFormError.classList.add('hidden');
