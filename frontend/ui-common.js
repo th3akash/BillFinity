@@ -1,4 +1,30 @@
 (function(){
+  function showBackendDown(){
+    try {
+      let el = document.getElementById('backend-down-banner');
+      if (!el){
+        el = document.createElement('div');
+        el.id = 'backend-down-banner';
+        el.className = 'fixed top-0 left-0 right-0 bg-rose-600 text-white text-center py-2 z-50';
+        el.textContent = 'Unable to reach server. Some features may be unavailable.';
+        document.body.appendChild(el);
+      }
+    } catch(_) {}
+  }
+  function checkHealth(){
+    try {
+      const base = window.BILLFINITY_API || '';
+      fetch(base + '/health', { cache: 'no-store' }).then(function(r){
+        if (!r.ok) throw new Error('bad');
+      }).catch(showBackendDown);
+    } catch(_) {
+      showBackendDown();
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', checkHealth); else checkHealth();
+})();
+
+(function(){
   // Date helpers: parse backend UTC-naive ISO strings safely and format locally
   function asDate(v){
     if (v instanceof Date) return v;
