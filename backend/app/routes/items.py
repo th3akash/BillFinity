@@ -26,7 +26,10 @@ def create_item(payload: schemas.ItemCreate, db: Session = Depends(get_db), user
     exists = db.query(models.Item).filter(models.Item.sku == payload.sku).first()
     if exists:
         raise HTTPException(status_code=400, detail="SKU already exists")
-    item = models.Item(**payload.dict())
+    data = payload.dict()
+    if data.get("gst_rate") is None:
+        data.pop("gst_rate")
+    item = models.Item(**data)
     db.add(item)
     db.flush()
     db.refresh(item)
